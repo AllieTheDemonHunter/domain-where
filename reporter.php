@@ -39,11 +39,10 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "1-alpha", $timeout = 10000, $response;
+    public $version = "v0.27.4", $timeout = 10000, $response = "Something has gone wrong.";
 
     public function __construct()
     {
-        $this->response = array("vs" => $this->version);
         try {
             header('Content-Type: application/json; charset=utf-8');
             $infoSource = $_SERVER['REQUEST_METHOD'] == "POST" ? getInputFromRequestBody() : ($_SERVER['REQUEST_METHOD'] == "GET" ? $_GET : array());
@@ -195,20 +194,24 @@ class domain_where
                     }*/
                     break;
                 }
-                case (preg_match("/^drush/i")): {
-                    $drushData = `cd ~/public_html && php ~/vendor/drush/drush/drush.php status`;
-                    if (is_null($drushData)) {
-                        $this->response["e"] = "drush is denied on server";
-                    } else {
-                        $drushData = str_replace("DRUSH_BACKEND_OUTPUT_START>>>", "", $drushData);
-                        $drushData = str_replace("<<<DRUSH_BACKEND_OUTPUT_END", "", $drushData);
-                        $drushDataArray = explode("\n", $drushData);
-                        foreach($drushDataArray as $row) {
-                            $this_row_array = explode(":", $row);
-                            $drush_output[trim($this_row_array[0])] = trim($this_row_array[1]);
-                        }
-                        $this->response['v'] = $drush_output;
-                    }
+                case ("drush"): {
+                    $this->response = $this->drush_request("status", ["Drupal version", "Drupal bootstrap", "Database"]);
+                    break;
+                }
+
+                case ("leadtrekker"): {
+                    $this->response = $this->drush_request("pmi leadtrekker", ["Status"]);
+                    break;
+                }
+
+                case ("leadtrekker_api_key"): {
+                    $this->response = $this->drush_request("vget leadtrekker_api_key", ["leadtrekker_api_key"]);
+                    break;
+                }
+
+                case ("psi.remote"): {
+                    $actual_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+                    $this->response = $this->psi($actual_url);
                     break;
                 }
 
@@ -222,6 +225,43 @@ class domain_where
         }
 
         return (array) $this->response;
+    }
+
+    public function drush_request($command, $keys) {
+        $drushData = `cd /var/www/aucor && php /home/allie/vendor/drush/drush/drush.php $command`;
+        if (is_null($drushData)) {
+            $drush_output = "drush is denied on server";
+        } else {
+            $drushDataArray = explode(PHP_EOL, $drushData);
+
+            if(is_array($drushDataArray) && !empty($drushDataArray)) {
+                foreach($drushDataArray as $row) {
+
+                    $this_row_array = explode(":", $row);
+
+                    $the_key = trim($this_row_array[0]);
+                    if(in_array($the_key, $keys)) {
+                        $drush_output = trim($this_row_array[1]);
+                    }
+                }
+            } else {
+                $drush_output = "No data.";
+            }
+        }
+
+        return $drush_output;
+    }
+
+    public function psi ($url) {
+        $psiData = `psi z-aucor.co.za.dedi179.cpt3.host-h.net --nokey --strategy=mobile --format=json --threshold=0`;
+        if (is_null($psiData)) {
+            $response["e"] = "psi is denied on server: psi";
+        } else {
+            $psi_object = json_decode($psiData);
+            $response['v'] = $psi_object->overview;
+        }
+
+        return $response;
     }
 }
 

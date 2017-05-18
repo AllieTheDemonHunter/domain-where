@@ -18,6 +18,29 @@ function is_analytics($str)
     return $matches ? count($matches) . " match: " . $matches[0] : FALSE;
 }
 
+function _query($this_type, $domain, $end_point_url, $fixes)
+{
+    $c = curl_init($end_point_url);
+    curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+    $returned_from_server = curl_exec($c);
+    $json_from_server = json_decode($returned_from_server);
+    curl_close($c);
+
+    if (is_object($json_from_server) && isset($json_from_server->response->v)) {
+        if (is_object($json_from_server->response->v)) {
+            $response = $json_from_server->response->v;
+        } else {
+            $response = $fixes['pre'][$this_type] . $json_from_server->response->v . $fixes['post'][$this_type];
+        }
+    } else {
+        $response = $json_from_server;
+    }
+
+    return $response;
+}
+
+
+
 function query(array $type, $url)
 {
     $response = [];
@@ -36,56 +59,69 @@ function query(array $type, $url)
                 curl_close($c);
                 $outcome = is_analytics($html_from_server);
                 $response[$this_type] = $outcome ? "Analytics code found: " . $outcome : "No Analytics found.";
-            }
                 break;
+            }
 
-            //Remove
-            case "drush" || "disk": {
+            case "psi.local": {
+
+                break;
+            }
+
+            default: {
 
                 switch ($this_type) {
                     case "disk": {
-                        $url_variables['l'] = "/usr/home";
+                        $url_variables['l'] = "/";
                         $fixes['post'][$this_type] = "%";
                         break; // this is being done in this switch statement, not the main one that contains it above.
                     }
 
                     case "drush": {
                         $fixes['post'][$this_type] = "";
+                        break;
+                    }
+
+                    case "leadtrekker": {
+                        $fixes['post'][$this_type] = "";
+                        break;
+                    }
+
+                    case "leadtrekker_api_key": {
+                        $fixes['post'][$this_type] = "";
+                        break;
+                    }
+
+                    case "psi.remote": {
+                        $fixes['post'][$this_type] = "";
+                        break;
                     }
                 }
-            }
 
-            default: {
                 $url_variables['t'] = $this_type;
                 $end_point_url = $url . "/" . SITE_REPORTER . "?" . http_build_query($url_variables);
-                $c = curl_init($end_point_url);
-                curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-                $returned_from_server = curl_exec($c);
-                $json_from_server = json_decode($returned_from_server);
-                curl_close($c);
-
-                if (is_object($json_from_server) && isset($json_from_server->response->v)) {
-                    if (is_object($json_from_server->response->v)) {
-                        $response[$this_type] = $json_from_server->response->v;
-                    } else {
-                        $response[$this_type] = $fixes['pre'][$this_type] . $json_from_server->response->v . $fixes['post'][$this_type];
-                    }
-                } else {
-                    $response[$this_type] = $returned_from_server;// "ABORTING: No reporter file: <b>'".SITE_REPORTER."</b>' on " . $url;
-                    return [$url => $response];
-                }
-
+                $response[$this_type] = _query($this_type, $url, $end_point_url, $fixes);
             }
         }
-
-        unset($this_type);
     }
 
 
     return [$url => $response];
 }
 
-$domains = ["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"];
+
+function psi ($url) {
+    $psiData = `psi $url --nokey --strategy=mobile --format=json --threshold=0`;
+    if (is_null($psiData)) {
+        $response["e"] = "psi is denied on server: psi";
+    } else {
+        $psi_object = json_decode($psiData);
+        $response['v'] = $psi_object->overview;
+    }
+
+    return $response;
+}
+
+$domains = ["http://aucor.starbright.co.za"];
 
 foreach ($domains as $domain) {
     $time_taken = 0;
@@ -93,7 +129,7 @@ foreach ($domains as $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    rprint(query(["analytics", "cpu", "ram", "disk", "drush"], $domain));
+    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi.remote", "psi.local"], $domain));
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);
