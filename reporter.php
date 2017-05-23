@@ -39,7 +39,7 @@ function getInputFromRequestBody()
 class domain_where
 {
     public $version = "v0.27.4", $timeout = 10000, $response = [];
-    public $user = "alliednsgk";
+    public $user;
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
 
@@ -54,7 +54,7 @@ class domain_where
         }
 
         if ($drush_root == "") {
-            $this->drush_root = sprintf($this->web_root, $this->user);
+            $this->drush_root = sprintf($this->drush_root, $this->user);
         } else {
             $this->drush_root = $drush_root;
         }
@@ -246,7 +246,7 @@ class domain_where
     }
 }
 
-$response = new domain_where();
+$response = new domain_where("zdspsarazz");
 
 if (array_key_exists("e", $response) && (strlen($response["e"]) >= 255)) {
     $response["e"] = substr($response["e"], 0, 250) . "...";
