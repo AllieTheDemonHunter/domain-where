@@ -27,7 +27,7 @@
         }
 
         .report {
-            flex: 0 1 25%;
+            flex: 0 1 30%;
             padding: 0.6em 0.8em;
             background-color: rgba(255, 255, 255, 0.22);
             border-radius: 3px;
@@ -187,7 +187,7 @@ function query(array $type, $url)
 }
 
 $domains["zdspsarazz"] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
-//$domains["ezraiwbykk"] = "https://ezrails.co.za/";
+$domains["ezraiwbykk"] = "https://ezrails.co.za/";
 
 foreach ($domains as $user => $domain) {
     $time_taken = 0;
@@ -199,14 +199,15 @@ foreach ($domains as $user => $domain) {
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);
-    print process($data);
-    print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
+    print process($data, $time_taken);
 }
 
-function process(array $data) {
+function process(array $data, $time_taken) {
     foreach($data as $domain_url => $report) {
         print "<div class='reports'>";
+        print "<h2>$domain_url</h2>";
         _process_report($report);
+        print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
         print "</div>";
     }
     return;
