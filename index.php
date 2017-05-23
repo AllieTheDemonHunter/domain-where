@@ -62,8 +62,19 @@ function query(array $type, $url)
                 break;
             }
 
-            case "psi.local": {
-                $response[$this_type] = psi($url);
+            case "psi": {
+                $psi_url_string = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url={$url}/&strategy=mobile&key=" . GOOGLE_PSI_API_KEY;
+                $c = curl_init($psi_url_string);
+                curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+                $json_from_server = curl_exec($c);
+                curl_close($c);
+
+                $psi_object = json_decode($json_from_server);
+
+                if (isset($psi_object->responseCode) && $psi_object->responseCode == "200") {
+                    unset($psi_object->formattedResults);
+                    $response[$this_type] = $psi_object;
+                }
                 break;
             }
 
@@ -90,11 +101,6 @@ function query(array $type, $url)
                         $fixes['post'][$this_type] = "";
                         break;
                     }
-
-                    case "psi.remote": {
-                        $fixes['post'][$this_type] = "";
-                        break;
-                    }
                 }
 
                 $url_variables['t'] = $this_type;
@@ -108,20 +114,7 @@ function query(array $type, $url)
     return [$url => $response];
 }
 
-
-function psi ($url) {
-    $psiData = `psi $url --nokey --strategy=mobile --format=json --threshold=0`;
-    if (is_null($psiData)) {
-        $response["e"] = "psi is denied on server: psi";
-    } else {
-        $psi_object = json_decode($psiData);
-        $response['v'] = $psi_object->overview;
-    }
-
-    return $response;
-}
-
-$domains = ["https://www.starbright.co.za/"];
+$domains = ["http://z-dspsa.co.za.dedi179.cpt3.host-h.net/"];
 
 foreach ($domains as $domain) {
     $time_taken = 0;
@@ -129,7 +122,7 @@ foreach ($domains as $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi.remote", "psi.local"], $domain));
+    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain));
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);

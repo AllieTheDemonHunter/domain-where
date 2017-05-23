@@ -66,7 +66,7 @@ class domain_where
     public function drush_request($command, $keys) {
         $drushData = `cd $this->webroot && php $this->drush_root $command`;
         if (is_null($drushData)) {
-            $drush_output = "drush is denied on server";
+            $response['e'] = "drush is denied on server";
         } else {
             $drushDataArray = explode(PHP_EOL, $drushData);
 
@@ -77,11 +77,11 @@ class domain_where
 
                     $the_key = trim($this_row_array[0]);
                     if(in_array($the_key, $keys)) {
-                        $drush_output = trim($this_row_array[1]);
+                        $response['v'][] = $this_row_array;
                     }
                 }
             } else {
-                $drush_output = "No data.";
+                $response['e'] = "No data.";
             }
         }
 
