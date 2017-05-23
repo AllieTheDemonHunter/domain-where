@@ -38,27 +38,18 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "v0.3", $timeout = 10000, $response = [];
+    public $version = "v0.31", $timeout = 10000, $response = [];
     public $user;
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
 
-    public function __construct($web_root = "", $drush_root = "")
+    public function __construct()
     {
         $this->user = `whoami`;
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
-        if ($web_root == "") {
-            $this->web_root = sprintf($this->web_root, `whoami`);
-        } else {
-            $this->web_root = $web_root;
-        }
-
-        if ($drush_root == "") {
-            $this->drush_root = sprintf($this->drush_root, `whoami`);
-        } else {
-            $this->drush_root = $drush_root;
-        }
+        $this->web_root = sprintf($this->web_root, $this->user);
+        $this->drush_root = sprintf($this->drush_root, $this->user);
 
         $this->report();
         return (array) $this->response;
@@ -213,7 +204,7 @@ try {
     print "FAILED TO UPDATE";
 }
 
-$response['info'] = new domain_where("zdspsarazz");
+$response['info'] = new domain_where();
 
 if (array_key_exists("e", $response['info']) && (strlen($response['info']["e"]) >= 255)) {
     $response['info']["e"] = substr($response['info']["e"], 0, 250) . "...";
