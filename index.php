@@ -1,3 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Domain Where</title>
+    <style>
+        body {
+            font-family: "monospace";
+            color: white;
+            background-color: rgba(0,0,0,.8);
+            font-size: 14px;
+        }
+
+        h3 {
+            margin: 1em auto 0.1em;
+            text-transform: capitalize;
+        }
+
+        #wrapper {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-around;
+            margin: 1em;
+            background-color: rgba(0,0,0,.8);
+            border-radius: 4px;
+            filter: drop-shadow(0 0 3px black);
+        }
+
+        .report {
+            flex: 0 1 25%;
+            padding: 0.6em 0.8em;
+            background-color: rgba(255, 255, 255, 0.22);
+            border-radius: 3px;
+            margin-bottom: 1px;
+        }
+
+        dt {
+            text-transform: uppercase;
+        }
+
+        .v {
+            color: green;
+        }
+
+        .e {
+            color: red;
+        }
+        
+        .reporter {
+            position: relative;
+        }
+
+        .update-status {
+            font-size: 0.8em;
+            border: 1px solid lightskyblue;
+            padding: 0.2em;
+            text-align: center;
+            border-radius: 2px;
+            background-color: rgba(173, 216, 230, 0.34);
+            position: absolute;
+            top: -2em;
+            right: -0.8em;
+            opacity: 0.2;
+        }
+
+        .update-status:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
 <?php
 /**
  * Created by PhpStorm.
@@ -128,7 +200,7 @@ foreach ($domains as $user => $domain) {
 
     $time_taken = ($end_time - $start_time);
     print process($data);
-    print "Time taken: <b>{$time_taken}</b>s";
+    print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
 }
 
 function process(array $data) {
@@ -144,7 +216,13 @@ function process_psi (stdClass $report) {
     if(isset($report->ruleGroups)) {
         print "<dl>";
         foreach($report->ruleGroups as $rule_heading => $value_object) {
-            print "<dt>" .trim($rule_heading). "</dt><dd>" .trim($value_object->score). "%</dd>";
+            $score = trim($value_object->score);
+            if($score < 50) {
+                $class = "e";
+            } else {
+                $class = "v";
+            }
+            print "<dt class='$class'>" .trim($rule_heading). "</dt><dd class='$class'>" .$score. "%</dd>";
         }
         print "<dl>";
     }
@@ -210,3 +288,7 @@ function make_list(array $data) {
     }
     print "</dl>";
 }
+?>
+</div>
+</body>
+</html>
