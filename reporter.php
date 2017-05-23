@@ -38,7 +38,7 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "v0.27.4", $timeout = 10000, $response = [];
+    public $version = "v0.3", $timeout = 10000, $response = [];
     public $user;
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
@@ -244,6 +244,8 @@ class domain_where
         } catch (Exception $e) {
             $this->response["e"] = $e->getMessage();
         }
+
+        return $this->response;
     }
 }
 
