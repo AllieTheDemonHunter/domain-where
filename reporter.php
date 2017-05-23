@@ -43,19 +43,19 @@ class domain_where
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
 
-    public function __construct($user, $web_root = "", $drush_root = "")
+    public function __construct($web_root = "", $drush_root = "")
     {
-        $this->user = $user;
+        $this->user = `whoami`;
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
         if ($web_root == "") {
-            $this->web_root = sprintf($this->web_root, $this->user);
+            $this->web_root = sprintf($this->web_root, `whoami`);
         } else {
             $this->web_root = $web_root;
         }
 
         if ($drush_root == "") {
-            $this->drush_root = sprintf($this->drush_root, $this->user);
+            $this->drush_root = sprintf($this->drush_root, `whoami`);
         } else {
             $this->drush_root = $drush_root;
         }
