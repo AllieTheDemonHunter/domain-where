@@ -123,7 +123,7 @@ foreach ($domains as $user => $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain);
+    $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "pathauto", "leadtrekker_api_key", "psi"], $domain);
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);
@@ -140,16 +140,32 @@ function process(array $data) {
     return;
 }
 
+function process_psi (stdClass $report) {
+    if(isset($report->ruleGroups)) {
+        print "<dl>";
+        foreach($report->ruleGroups as $rule_heading => $value_object) {
+            print "<dt>" .trim($rule_heading). "</dt><dd>" .trim($value_object->score). "%</dd>";
+        }
+        print "<dl>";
+    }
+}
+
 function _process_report($report) {
     foreach($report as $type_of_report => $reporter) {
         print "<div class='report $type_of_report'>";
         switch($type_of_report) {
             case "psi":
                 //type should be object
+                print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
+                process_psi($reporter);
+                print "</div>";
                 break;
+
             case "analytics":
                 //Just a string
+                print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>$reporter</div>";
                 break;
+
             default:
                 //Assumed to be a reporter object.
                 _process_reporter($type_of_report, $reporter);
@@ -160,7 +176,7 @@ function _process_report($report) {
 
 function _process_reporter($type_of_report, $reporter) {
     print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
-
+    print "<div class='update-status'><em>" .nl2br(trim($reporter->update)). "</em> @ " . $reporter->info->version ."</div>";
     if(isset($reporter->info->response->v)) {
       $value_or_error = "v";
     } elseif(isset($reporter->info->response->e)) {
@@ -175,7 +191,7 @@ function _process_reporter($type_of_report, $reporter) {
         make_list($the_value);
     } else {
         //Server metrics
-        print $the_value;
+        print $the_value . "%";
     }
 
 
@@ -184,8 +200,13 @@ function _process_reporter($type_of_report, $reporter) {
 
 function make_list(array $data) {
     print "<dl>";
-    foreach($data as $term => $definition) {
-        print "<dt>" .$term. "</dt><dd>" .$term. "</dd>";
+    foreach($data as $result) {
+        $definition = $result[1];
+        if(is_array($definition)) {
+            print "<dt>" .trim($result[0]). "</dt><dd>" .make_list($definition). "</dd>";
+        } else {
+            print "<dt>" .trim($result[0]). "</dt><dd>" .trim($definition). "</dd>";
+        }
     }
     print "</dl>";
 }

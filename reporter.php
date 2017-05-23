@@ -38,7 +38,7 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "v0.32", $response = [];
+    public $version = "v0.4", $response = [];
     public $user;
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
@@ -171,6 +171,11 @@ class domain_where
 
                 case ("leadtrekker"): {
                     $this->response = $this->drush_request("pmi leadtrekker", ["Status"]);
+                    break;
+                }
+
+                case ("pathauto"): {
+                    $this->response = $this->drush_request("pmi pathauto", ["Status"]);
                     break;
                 }
 
