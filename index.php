@@ -41,7 +41,7 @@ function _query($this_type, $domain, $end_point_url, $fixes)
 
 
 
-function query(array $type, $url)
+function query(array $type, $url, $user)
 {
     $response = [];
     $url_variables = [];
@@ -105,7 +105,7 @@ function query(array $type, $url)
 
                 $url_variables['t'] = $this_type;
                 $end_point_url = $url . "/" . SITE_REPORTER . "?" . http_build_query($url_variables);
-                $response[$this_type] = _query($this_type, $url, $end_point_url, $fixes);
+                $response[$this_type] = _query($this_type, $url, $end_point_url, $fixes, $user);
             }
         }
     }
@@ -114,15 +114,15 @@ function query(array $type, $url)
     return [$url => $response];
 }
 
-$domains = ["http://z-dspsa.co.za.dedi179.cpt3.host-h.net/"];
+$domains["zdspsarazz"] = ["http://z-dspsa.co.za.dedi179.cpt3.host-h.net/"];
 
-foreach ($domains as $domain) {
+foreach ($domains as $user => $domain) {
     $time_taken = 0;
     $start_time = 0;
     $end_time = 0;
 
     $start_time = time() + microtime();
-    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain));
+    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key"], $domain, $user));
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);

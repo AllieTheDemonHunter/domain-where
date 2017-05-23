@@ -85,7 +85,7 @@ class domain_where
             }
         }
 
-        return $drush_output;
+        return $response;
     }
 
     public function psi ($url) {
