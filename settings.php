@@ -6,4 +6,4 @@
  * Time: 8:36 PM
  */
 
-define("SITE_REPORTER", "reporter.php");
+define("SITE_REPORTER", "reporter/reporter.php");

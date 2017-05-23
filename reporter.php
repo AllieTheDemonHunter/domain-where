@@ -19,11 +19,10 @@
  * Our system uses HTTP POST requests for catching monitored value.
  */
 
-if (array_key_exists("dbg", $_GET)) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(-1);
-}
+
 
 function microtime_float()
 {
@@ -39,9 +38,69 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "v0.27.4", $timeout = 10000, $response = "Something has gone wrong.";
+    public $version = "v0.27.4", $timeout = 10000, $response = [];
+    public $user = "alliednsgk";
+    public $web_root = "/usr/home/%s/public_html";
+    public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
 
-    public function __construct()
+    public function __construct($user, $web_root = "", $drush_root = "")
+    {
+        // Replace in the user name into string.
+        // Note that if a webroot argument is passed, it's assumed that the user part is already present.
+        if ($web_root == "") {
+            $this->webroot = sprintf($this->web_root, $this->user);
+        } else {
+            $this->webroot = $web_root;
+        }
+
+        if ($drush_root == "") {
+            $this->drush_root = sprintf($this->web_root, $this->user);
+        } else {
+            $this->drush_root = $drush_root;
+        }
+
+        $this->report();
+        return (array) $this->response;
+    }
+
+    public function drush_request($command, $keys) {
+        $drushData = `cd $this->webroot && php $this->drush_root $command`;
+        if (is_null($drushData)) {
+            $drush_output = "drush is denied on server";
+        } else {
+            $drushDataArray = explode(PHP_EOL, $drushData);
+
+            if(is_array($drushDataArray) && !empty($drushDataArray)) {
+                foreach($drushDataArray as $row) {
+
+                    $this_row_array = explode(":", $row);
+
+                    $the_key = trim($this_row_array[0]);
+                    if(in_array($the_key, $keys)) {
+                        $drush_output = trim($this_row_array[1]);
+                    }
+                }
+            } else {
+                $drush_output = "No data.";
+            }
+        }
+
+        return $drush_output;
+    }
+
+    public function psi ($url) {
+        $psiData = `psi $url --nokey --strategy=mobile --format=json --threshold=0`;
+        if (is_null($psiData)) {
+            $response["e"] = "psi is denied on server: psi";
+        } else {
+            $psi_object = json_decode($psiData);
+            $response['v'] = $psi_object->overview;
+        }
+
+        return $response;
+    }
+
+    public function report()
     {
         try {
             header('Content-Type: application/json; charset=utf-8');
@@ -70,7 +129,7 @@ class domain_where
                     break;
                 }
                 case ("ram"): {
-                    $freeData = `free -o -k`;
+                    $freeData = `free -k`;
                     if (is_null($freeData)) {
                         $this->response["e"] = "shell_exec is denied on server";
                     } else {
@@ -154,46 +213,7 @@ class domain_where
                     }
                     break;
                 }
-                case ("mysql"): {
-                    /*if ($_SERVER['REQUEST_METHOD'] == "POST") {
-                        if (!array_key_exists("cs", $infoSource)) {
-                            $this->response["e"] = "connection string was not specified";
-                        } else {
-                            preg_match_all("/\s*(.*?)\s*=\s*(.*?)\s*;/", $infoSource["cs"], $matches, PREG_PATTERN_ORDER);
-                            $connArray = array();
-                            for ($i = 0; $i < count($matches[1]); $i++)
-                                $connArray[$matches[1][$i]] = $matches[2][$i];
-                            $server = $connArray['Server'];
-                            $password = $connArray['Pwd'];
-                            $user = $connArray['Uid'];
-                            $version = explode('.', PHP_VERSION);
-                            if ((int)$version[0] < 5) {
-                                $start_point = microtime_float();
-                                $conn = mysql_connect($server . (array_key_exists('Port', $connArray) ? (":" . $connArray['Port']) : ""), $user, $password, true);
-                                if (!$conn) {
-                                    $this->response["e"] = mysql_error();
-                                } else {
-                                    $end_point = microtime_float();
-                                    $this->response["v"] = round(($end_point - $start_point) * 1000);
-                                    mysql_close($conn);
-                                }
-                            } else {
-                                $start_point = microtime_float();
-                                $conn = mysqli_connect($server, $user, $password, "", (array_key_exists('Port', $connArray) ? (int)$connArray['Port'] : -1));
-                                if (!$conn) {
-                                    $this->response["e"] = mysqli_connect_error();
-                                } else {
-                                    $end_point = microtime_float();
-                                    $this->response["v"] = round(($end_point - $start_point) * 1000);
-                                    mysqli_close($conn);
-                                }
-                            }
-                        }
-                    } else {
-                        header("HTTP/1.1 404 Not Found");
-                    }*/
-                    break;
-                }
+
                 case ("drush"): {
                     $this->response = $this->drush_request("status", ["Drupal version", "Drupal bootstrap", "Database"]);
                     break;
@@ -223,45 +243,6 @@ class domain_where
         } catch (Exception $e) {
             $this->response["e"] = $e->getMessage();
         }
-
-        return (array) $this->response;
-    }
-
-    public function drush_request($command, $keys) {
-        $drushData = `cd /var/www/aucor && php /home/allie/vendor/drush/drush/drush.php $command`;
-        if (is_null($drushData)) {
-            $drush_output = "drush is denied on server";
-        } else {
-            $drushDataArray = explode(PHP_EOL, $drushData);
-
-            if(is_array($drushDataArray) && !empty($drushDataArray)) {
-                foreach($drushDataArray as $row) {
-
-                    $this_row_array = explode(":", $row);
-
-                    $the_key = trim($this_row_array[0]);
-                    if(in_array($the_key, $keys)) {
-                        $drush_output = trim($this_row_array[1]);
-                    }
-                }
-            } else {
-                $drush_output = "No data.";
-            }
-        }
-
-        return $drush_output;
-    }
-
-    public function psi ($url) {
-        $psiData = `psi z-aucor.co.za.dedi179.cpt3.host-h.net --nokey --strategy=mobile --format=json --threshold=0`;
-        if (is_null($psiData)) {
-            $response["e"] = "psi is denied on server: psi";
-        } else {
-            $psi_object = json_decode($psiData);
-            $response['v'] = $psi_object->overview;
-        }
-
-        return $response;
     }
 }
 

@@ -63,7 +63,7 @@ function query(array $type, $url)
             }
 
             case "psi.local": {
-
+                $response[$this_type] = psi($url);
                 break;
             }
 
@@ -121,7 +121,7 @@ function psi ($url) {
     return $response;
 }
 
-$domains = ["http://aucor.starbright.co.za"];
+$domains = ["https://www.starbright.co.za/"];
 
 foreach ($domains as $domain) {
     $time_taken = 0;
