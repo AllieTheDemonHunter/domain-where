@@ -45,12 +45,13 @@ class domain_where
 
     public function __construct($user, $web_root = "", $drush_root = "")
     {
+        $this->user = $user;
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
         if ($web_root == "") {
-            $this->webroot = sprintf($this->web_root, $this->user);
+            $this->web_root = sprintf($this->web_root, $this->user);
         } else {
-            $this->webroot = $web_root;
+            $this->web_root = $web_root;
         }
 
         if ($drush_root == "") {
@@ -64,7 +65,7 @@ class domain_where
     }
 
     public function drush_request($command, $keys) {
-        $drushData = `cd $this->webroot && php $this->drush_root $command`;
+        $drushData = `cd $this->web_root && php $this->drush_root $command`;
         if (is_null($drushData)) {
             $response['e'] = "drush is denied on server";
         } else {
@@ -244,6 +245,12 @@ class domain_where
             $this->response["e"] = $e->getMessage();
         }
     }
+}
+
+try {
+    print `git pull`;
+} catch (Exception $e) {
+    print "FAILED TO UPDATE";
 }
 
 $response = new domain_where("zdspsarazz");

@@ -18,7 +18,7 @@ function is_analytics($str)
     return $matches ? count($matches) . " match: " . $matches[0] : FALSE;
 }
 
-function _query($this_type, $domain, $end_point_url, $fixes)
+function _query($this_type, $end_point_url, $fixes)
 {
     $c = curl_init($end_point_url);
     curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
@@ -105,7 +105,7 @@ function query(array $type, $url, $user)
 
                 $url_variables['t'] = $this_type;
                 $end_point_url = $url . "/" . SITE_REPORTER . "?" . http_build_query($url_variables);
-                $response[$this_type] = _query($this_type, $url, $end_point_url, $fixes, $user);
+                $response[$this_type] = _query($this_type, $end_point_url, $fixes, $user);
             }
         }
     }
