@@ -41,7 +41,7 @@ function _query($this_type, $end_point_url, $fixes)
 
 
 
-function query(array $type, $url, $user)
+function query(array $type, $url)
 {
     $response = [];
     $url_variables = [];
@@ -105,7 +105,7 @@ function query(array $type, $url, $user)
 
                 $url_variables['t'] = $this_type;
                 $end_point_url = $url . "/" . SITE_REPORTER . "?" . http_build_query($url_variables);
-                $response[$this_type] = _query($this_type, $end_point_url, $fixes, $user);
+                $response[$this_type] = _query($this_type, $end_point_url, $fixes);
             }
         }
     }
@@ -115,7 +115,7 @@ function query(array $type, $url, $user)
 }
 
 $domains["zdspsarazz"] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
-$domains["ezraiwbykk"] = "https://ezrails.co.za/";
+//$domains["ezraiwbykk"] = "https://ezrails.co.za/";
 
 foreach ($domains as $user => $domain) {
     $time_taken = 0;
@@ -123,7 +123,7 @@ foreach ($domains as $user => $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain, $user);
+    $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain);
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);
@@ -134,9 +134,10 @@ foreach ($domains as $user => $domain) {
 function process(array $data) {
     foreach($data as $domain_url => $report) {
         print "<div class='reports'>";
-        process_report($report);
+        _process_report($report);
         print "</div>";
     }
+    return;
 }
 
 function _process_report($report) {
@@ -160,14 +161,31 @@ function _process_report($report) {
 function _process_reporter($type_of_report, $reporter) {
     print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
 
-    if(isset($reporter->info->response['v'])) {
+    if(isset($reporter->info->response->v)) {
       $value_or_error = "v";
-    } elseif(isset($reporter->info->response['e'])) {
+    } elseif(isset($reporter->info->response->e)) {
         $value_or_error = "e";
     }
 
     print "<div class='value $value_or_error'>";
-    print $reporter->info->response[$value_or_error];
+    $the_value = $reporter->info->response->$value_or_error;
+
+    if(is_array($the_value)){
+        //Drush
+        make_list($the_value);
+    } else {
+        //Server metrics
+        print $the_value;
+    }
+
 
     print "</div></div>";
+}
+
+function make_list(array $data) {
+    print "<dl>";
+    foreach($data as $term => $definition) {
+        print "<dt>" .$term. "</dt><dd>" .$term. "</dd>";
+    }
+    print "</dl>";
 }
