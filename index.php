@@ -123,9 +123,51 @@ foreach ($domains as $user => $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain, $user));
+    $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain, $user);
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);
+    print process($data);
     print "Time taken: <b>{$time_taken}</b>s";
+}
+
+function process(array $data) {
+    foreach($data as $domain_url => $report) {
+        print "<div class='reports'>";
+        process_report($report);
+        print "</div>";
+    }
+}
+
+function _process_report($report) {
+    foreach($report as $type_of_report => $reporter) {
+        print "<div class='report $type_of_report'>";
+        switch($type_of_report) {
+            case "psi":
+                //type should be object
+                break;
+            case "analytics":
+                //Just a string
+                break;
+            default:
+                //Assumed to be a reporter object.
+                _process_reporter($type_of_report, $reporter);
+        }
+        print "</div>";
+    }
+}
+
+function _process_reporter($type_of_report, $reporter) {
+    print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
+
+    if(isset($reporter->info->response['v'])) {
+      $value_or_error = "v";
+    } elseif(isset($reporter->info->response['e'])) {
+        $value_or_error = "e";
+    }
+
+    print "<div class='value $value_or_error'>";
+    print $reporter->info->response[$value_or_error];
+
+    print "</div></div>";
 }
