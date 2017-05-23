@@ -172,48 +172,6 @@ class domain_where
                     }
                     break;
                 }
-                case ("port"): {
-                    if (!array_key_exists("a", $infoSource)) {
-                        $this->response["e"] = "address was not specified";
-                    } else {
-                        $port = (int)(array_key_exists("p", $infoSource) ? $infoSource["p"] : "80");
-                        if (($port > 0) && ($port < 65535)) {
-                            $start_point = microtime_float();
-                            $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-                            if (!$socket) {
-                                $this->response["e"] = socket_strerror(socket_last_error($socket));
-                            } else {
-                                if (!socket_set_nonblock($socket)) {
-                                    $this->response["e"] = "could not set up nonblocking mode";
-                                } else {
-                                    while (!@socket_connect($socket, $infoSource["a"], $port)) {
-                                        $err = socket_last_error($socket);
-                                        if ($err == 115 || $err == 114) {
-                                            if ((microtime_float() - $start_point) * 1000 >= $this->timeout) {
-                                                socket_close($socket);
-                                                $this->response["e"] = "connection timed out";
-                                                break;
-                                            }
-                                            sleep(1);
-                                            continue;
-                                        } else {
-                                            $this->response["e"] = socket_strerror($err);
-                                            break;
-                                        }
-                                    }
-                                    if (!array_key_exists("e", $this->response)) {
-                                        $end_point = microtime_float();
-                                        $this->response["v"] = round(($end_point - $start_point) * 1000);
-                                        socket_close($socket);
-                                    }
-                                }
-                            }
-                        } else {
-                            $this->response["e"] = "specified port is incorrect";
-                        }
-                    }
-                    break;
-                }
 
                 case ("drush"): {
                     $this->response = $this->drush_request("status", ["Drupal version", "Drupal bootstrap", "Database"]);
