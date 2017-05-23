@@ -115,6 +115,7 @@ function query(array $type, $url, $user)
 }
 
 $domains["zdspsarazz"] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
+$domains["ezraiwbykk"] = "https://ezrails.co.za/";
 
 foreach ($domains as $user => $domain) {
     $time_taken = 0;
@@ -122,7 +123,7 @@ foreach ($domains as $user => $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key"], $domain, $user));
+    rprint(query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "leadtrekker_api_key", "psi"], $domain, $user));
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);
