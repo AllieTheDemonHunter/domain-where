@@ -248,15 +248,15 @@ class domain_where
 }
 
 try {
-    print `git pull`;
+    $response['update'] = `git pull`;
 } catch (Exception $e) {
     print "FAILED TO UPDATE";
 }
 
-$response = new domain_where("zdspsarazz");
+$response['info'] = new domain_where("zdspsarazz");
 
-if (array_key_exists("e", $response) && (strlen($response["e"]) >= 255)) {
-    $response["e"] = substr($response["e"], 0, 250) . "...";
+if (array_key_exists("e", $response['info']) && (strlen($response['info']["e"]) >= 255)) {
+    $response['info']["e"] = substr($response['info']["e"], 0, 250) . "...";
 }
 
 echo json_encode($response);

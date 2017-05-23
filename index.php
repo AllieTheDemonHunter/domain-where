@@ -114,7 +114,7 @@ function query(array $type, $url, $user)
     return [$url => $response];
 }
 
-$domains["zdspsarazz"] = ["http://z-dspsa.co.za.dedi179.cpt3.host-h.net/"];
+$domains["zdspsarazz"] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
 
 foreach ($domains as $user => $domain) {
     $time_taken = 0;
