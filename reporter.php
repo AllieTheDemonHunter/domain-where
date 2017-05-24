@@ -38,7 +38,7 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "v0.61", $response = [];
+    public $version = "v0.62", $response = [];
     public $user;
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";

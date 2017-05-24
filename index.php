@@ -102,9 +102,11 @@ include_once "settings.php";
 include_once "functions.php";
 
 
-$domains[] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
+$domains[] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net";
 $domains[] = "https://ezrails.co.za/";
-$domains[] = "https://www.ferreirapartners.co.za/";
+$domains[] = "https://www.ferreirapartners.co.za";
+$domains[] = "http://www.asinteriordesign.co.za";
+$domains[] = "http://z-aucor.co.za.dedi179.cpt3.host-h.net";
 
 foreach ($domains as $domain) {
     $time_taken = 0;
