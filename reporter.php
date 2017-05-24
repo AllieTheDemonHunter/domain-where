@@ -46,7 +46,7 @@ class domain_where
     public function __construct()
     {
         $this->user = trim(`whoami`);
-        $this->drush_root = `which drush` . "/drush.php";
+        print $this->drush_root = `which drush` . "/drush.php";
 
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
