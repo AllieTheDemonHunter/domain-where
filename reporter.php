@@ -169,9 +169,8 @@ class domain_where
 
                 case ("drush"): {
                     $commands["status"] = ["Drupal version", "Drupal bootstrap", "Database"];
-                    $commands["pmi leadtrekker"] = ["Status"];
-                    $commands["pmi pathauto"] =["Status"];
                     $commands["vget leadtrekker_api_key"] = ["leadtrekker_api_key"];
+                    $commands["pmi leadtrekker"] = ["Status"];
                     $this->response = $this->drush_request($commands);
                     break;
                 }

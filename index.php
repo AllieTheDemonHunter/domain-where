@@ -114,7 +114,7 @@ foreach ($domains as $domain) {
     $end_time = 0;
 
     $start_time = time() + microtime();
-    $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "pathauto", "leadtrekker_api_key", "psi"], $domain);
+    $data = query(["analytics", "cpu", "ram", "disk", "drush", "psi"], $domain);
     $end_time = time() + microtime();
 
 
