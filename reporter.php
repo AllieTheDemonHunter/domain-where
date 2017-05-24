@@ -55,27 +55,30 @@ class domain_where
         return (array) $this->response;
     }
 
-    public function drush_request($command, $keys) {
-        $drushData = `cd $this->web_root && php $this->drush_root $command`;
-        if (is_null($drushData)) {
-            $response['e'] = "Nothing here.";
-        } else {
-            $drushDataArray = explode(PHP_EOL, $drushData);
-
-            if(is_array($drushDataArray) && !empty($drushDataArray)) {
-                foreach($drushDataArray as $row) {
-
-                    $this_row_array = explode(":", $row);
-
-                    $the_key = trim($this_row_array[0]);
-                    if(in_array($the_key, $keys)) {
-                        $response['v'][] = $this_row_array;
-                    }
-                }
+    public function drush_request($commands) {
+        foreach($commands as $command => $keys) {
+            $drushData = `cd $this->web_root && php $this->drush_root $command`;
+            if (is_null($drushData)) {
+                $response['e'] = "Nothing here.";
             } else {
-                $response['e'] = "No data.";
+                $drushDataArray = explode(PHP_EOL, $drushData);
+
+                if(is_array($drushDataArray) && !empty($drushDataArray)) {
+                    foreach($drushDataArray as $row) {
+
+                        $this_row_array = explode(":", $row);
+
+                        $the_key = trim($this_row_array[0]);
+                        if(in_array($the_key, $keys)) {
+                            $response['v'][] = $this_row_array;
+                        }
+                    }
+                } else {
+                    $response['e'] = "No data.";
+                }
             }
         }
+
 
         return $response;
     }
@@ -165,22 +168,11 @@ class domain_where
                 }
 
                 case ("drush"): {
-                    $this->response = $this->drush_request("status", ["Drupal version", "Drupal bootstrap", "Database"]);
-                    break;
-                }
-
-                case ("leadtrekker"): {
-                    $this->response = $this->drush_request("pmi leadtrekker", ["Status"]);
-                    break;
-                }
-
-                case ("pathauto"): {
-                    $this->response = $this->drush_request("pmi pathauto", ["Status"]);
-                    break;
-                }
-
-                case ("leadtrekker_api_key"): {
-                    $this->response = $this->drush_request("vget leadtrekker_api_key", ["leadtrekker_api_key"]);
+                    $commands["status"] = ["Drupal version", "Drupal bootstrap", "Database"];
+                    $commands["pmi leadtrekker"] = ["Status"];
+                    $commands["pmi pathauto"] =["Status"];
+                    $commands["vget leadtrekker_api_key"] = ["leadtrekker_api_key"];
+                    $this->response = $this->drush_request($commands);
                     break;
                 }
 
