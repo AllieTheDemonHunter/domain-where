@@ -86,17 +86,7 @@ function query(array $type, $url)
                         break; // this is being done in this switch statement, not the main one that contains it above.
                     }
 
-                    case "drush": {
-                        $fixes['post'][$this_type] = "";
-                        break;
-                    }
-
-                    case "leadtrekker": {
-                        $fixes['post'][$this_type] = "";
-                        break;
-                    }
-
-                    case "leadtrekker_api_key": {
+                    default: {
                         $fixes['post'][$this_type] = "";
                         break;
                     }

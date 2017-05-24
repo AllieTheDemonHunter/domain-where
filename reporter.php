@@ -38,7 +38,7 @@ function getInputFromRequestBody()
 
 class domain_where
 {
-    public $version = "v0.6", $response = [];
+    public $version = "v0.61", $response = [];
     public $user;
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
@@ -58,7 +58,7 @@ class domain_where
     public function drush_request($command, $keys) {
         $drushData = `cd $this->web_root && php $this->drush_root $command`;
         if (is_null($drushData)) {
-            $response['e'] = "drush is denied on server";
+            $response['e'] = "Nothing here.";
         } else {
             $drushDataArray = explode(PHP_EOL, $drushData);
 
