@@ -102,11 +102,11 @@ include_once "settings.php";
 include_once "functions.php";
 
 
-$domains[] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net";
+/*$domains[] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net";
 $domains[] = "https://ezrails.co.za/";
 $domains[] = "https://www.ferreirapartners.co.za";
-$domains[] = "http://www.asinteriordesign.co.za";
-$domains[] = "http://z-aucor.co.za.dedi179.cpt3.host-h.net";
+$domains[] = "http://www.asinteriordesign.co.za";*/
+$domains[] = "http://aucor.taylor";
 
 foreach ($domains as $domain) {
     $time_taken = 0;
@@ -115,8 +115,8 @@ foreach ($domains as $domain) {
 
     $start_time = time() + microtime();
     $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "pathauto", "leadtrekker_api_key", "psi"], $domain);
-//    $data = query(["psi"], $domain);
     $end_time = time() + microtime();
+
 
     $time_taken = ($end_time - $start_time);
     print process($data, $time_taken);

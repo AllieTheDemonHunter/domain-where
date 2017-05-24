@@ -41,15 +41,16 @@ class domain_where
     public $version = "v0.62", $response = [];
     public $user;
     public $web_root = "/usr/home/%s/public_html";
-    public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
+    public $drush_root = "";
 
     public function __construct()
     {
         $this->user = trim(`whoami`);
+        $this->drush_root = `which drush` . "/drush.php";
+
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
         $this->web_root = sprintf($this->web_root, $this->user);
-        $this->drush_root = sprintf($this->drush_root, $this->user);
 
         $this->report();
         return (array) $this->response;

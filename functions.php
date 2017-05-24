@@ -161,6 +161,10 @@ function _process_report($report) {
 }
 
 function _process_reporter($type_of_report, $reporter) {
+    if(!is_object($reporter)) {
+        print "<b>$type_of_report:</b><br> No remote reporter.php file found.";
+        return false;
+    }
     print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
     print "<div class='update-status'><em>" .nl2br(trim($reporter->update)). "</em> @ " . $reporter->info->version ."</div>";
     if(isset($reporter->info->response->v)) {
@@ -177,7 +181,10 @@ function _process_reporter($type_of_report, $reporter) {
         make_list($the_value);
     } else {
         //Server metrics
-        print $the_value . "%";
+        print $the_value;
+        if(is_numeric($the_value)) {
+            print "%";
+        }
     }
 
     print "</div></div>";
