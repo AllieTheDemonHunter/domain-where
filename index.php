@@ -102,16 +102,18 @@ include_once "settings.php";
 include_once "functions.php";
 
 
-$domains["zdspsarazz"] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
-//$domains["ezraiwbykk"] = "https://ezrails.co.za/";
+$domains[] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net/";
+$domains[] = "https://ezrails.co.za/";
+$domains[] = "https://www.ferreirapartners.co.za/";
 
-foreach ($domains as $user => $domain) {
+foreach ($domains as $domain) {
     $time_taken = 0;
     $start_time = 0;
     $end_time = 0;
 
     $start_time = time() + microtime();
     $data = query(["analytics", "cpu", "ram", "disk", "drush", "leadtrekker", "pathauto", "leadtrekker_api_key", "psi"], $domain);
+//    $data = query(["psi"], $domain);
     $end_time = time() + microtime();
 
     $time_taken = ($end_time - $start_time);

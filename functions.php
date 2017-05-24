@@ -62,7 +62,7 @@ function query(array $type, $url)
             }
 
             case "psi": {
-                $psi_url_string = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url={$url}/&strategy=mobile&key=" . GOOGLE_PSI_API_KEY;
+                $psi_url_string = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url={$url}/&strategy=mobile&screenshot=true&key=" . GOOGLE_PSI_API_KEY;
                 $c = curl_init($psi_url_string);
                 curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
                 $json_from_server = curl_exec($c);
@@ -124,6 +124,7 @@ function process(array $data, $time_taken) {
 }
 
 function process_psi (stdClass $report) {
+    //rprint($report);
     if(isset($report->ruleGroups)) {
         print "<dl>";
         foreach($report->ruleGroups as $rule_heading => $value_object) {
@@ -136,6 +137,12 @@ function process_psi (stdClass $report) {
             print "<dt class='$class'>" .trim($rule_heading). "</dt><dd class='$class'>" .$score. "%</dd>";
         }
         print "<dl>";
+    }
+
+    if(isset($report->screenshot)) {
+        $google_data = $report->screenshot->data;
+        $base64_data = str_replace("-","+", str_replace("_", "/", $google_data));
+        print '<div><img src="data:'.$report->screenshot->mime_type.';charset=utf-8;base64, '.$base64_data.'"></div>';
     }
 }
 
