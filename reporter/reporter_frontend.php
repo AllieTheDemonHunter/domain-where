@@ -6,8 +6,6 @@ spl_autoload("reporter/reporter");
 class reporterFrontend extends reporter
 {
 
-    public $domain;
-
     public function __construct($domain)
     {
         parent::__construct($domain);
@@ -82,15 +80,14 @@ class reporterFrontend extends reporter
 
     function process($start_time)
     {
-        foreach ($this->response as $domain_url => $report) {
-            print "<div class='reports'>";
-            print "<h2>$domain_url</h2>";
-            $this->_process_report($report);
-            $end_time = time() + microtime();
-            $time_taken = ($end_time - $start_time);
-            print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
-            print "</div>";
-        }
+        print "<div class='reports'>";
+        print "<h2>$this->domain</h2>";
+        $this->_process_report($this->response);
+        $end_time = time() + microtime();
+        $time_taken = ($end_time - $start_time);
+        print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
+        print "</div>";
+
     }
 
     private function _process_report($report)
