@@ -5,7 +5,7 @@
  * Date: 17/05/16
  * Time: 6:18 PM
  */
-use reporter\reporterFrontend;
+use reporter\_reporterFrontend;
 include_once "reporter/convenience.php";
 include_once "reporter/reporter_frontend.php";
 ?>
@@ -30,7 +30,7 @@ $domains["http://www.asinteriordesign.co.za"] = FALSE;
 foreach ($domains as $domain => $active) {
     if($active) {
         $start_time = time() + microtime();
-        $report = new reporterFrontend($domain);
+        $report = new _reporterFrontend($domain);
         $report->query(["analytics", "cpu", "ram", "disk", "drush", "psi"])->process($start_time);
     }
 }

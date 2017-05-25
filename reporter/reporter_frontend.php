@@ -3,22 +3,31 @@
 namespace reporter;
 spl_autoload("reporter/reporter");
 
-class reporterFrontend extends reporter
+/**
+ * Class reporterFrontend
+ * @package reporter
+ */
+class _reporterFrontend extends reporter
 {
-
+    /**
+     * reporterFrontend constructor.
+     * @param $domain
+     */
     public function __construct($domain)
     {
         parent::__construct($domain);
         $this->curl_connect();
     }
 
+    /**
+     * @param array $type
+     * @return $this
+     */
     public function query(array $type)
     {
         $url_variables = [];
 
-
         foreach ($type as $this_type) {
-
 
             switch ($this_type) {
                 case "analytics": {
@@ -60,6 +69,11 @@ class reporterFrontend extends reporter
         return $this;
     }
 
+    /**
+     * @param $this_type
+     * @param $fixes
+     * @return bool|string
+     */
     protected function _query($this_type, $fixes)
     {
 
@@ -78,6 +92,9 @@ class reporterFrontend extends reporter
         return $response;
     }
 
+    /**
+     * @param $start_time
+     */
     function process($start_time)
     {
         print "<div class='reports'>";
@@ -90,6 +107,9 @@ class reporterFrontend extends reporter
 
     }
 
+    /**
+     * @param $report
+     */
     private function _process_report($report)
     {
         foreach ($report as $type_of_report => $reporter) {
@@ -115,6 +135,9 @@ class reporterFrontend extends reporter
         }
     }
 
+    /**
+     * @param $report
+     */
     private function _process_psi($report)
     {
         if (is_object($report) && isset($report->ruleGroups)) {
@@ -138,6 +161,11 @@ class reporterFrontend extends reporter
         }
     }
 
+    /**
+     * @param $type_of_report
+     * @param $reporter
+     * @return bool
+     */
     private function _process_reporter($type_of_report, $reporter)
     {
         $value_or_error = "e";

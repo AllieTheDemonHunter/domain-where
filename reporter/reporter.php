@@ -5,6 +5,10 @@ namespace reporter;
 define("SITE_REPORTER", "domain-where/reporter.php");
 define("GOOGLE_PSI_API_KEY", "AIzaSyANxegBGZ1GmVGTSyW8wRPgVh7MLrNQKJA");
 
+/**
+ * Class reporter
+ * @package reporter
+ */
 class reporter
 {
     use convenience;
@@ -13,6 +17,10 @@ class reporter
     public $version = "v0.62";
     protected $curl = NULL;
 
+    /**
+     * reporter constructor.
+     * @param $domain
+     */
     public function __construct($domain)
     {
         $this->domain = $domain;
@@ -24,6 +32,7 @@ class reporter
             curl_close($this->curl);
         }
     }
+
 
     public function request_psi()
     {
@@ -104,5 +113,11 @@ class reporter
     {
         preg_match('/GTM-[\w\d]{6,9}/im', strval($str), $matches);
         return $matches ? count($matches) . " match: " . $matches[0] : FALSE;
+    }
+
+    function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return "This class doesn't output strings.";
     }
 }

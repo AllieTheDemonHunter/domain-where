@@ -27,7 +27,7 @@ trait convenience
         foreach ($data as $result) {
             $definition = $result[1];
             if (is_array($definition)) {
-                print "<dt>" . trim($result[0]) . "</dt><dd>" . $this->make_list($definition) . "</dd>";
+                print "<dt>" . trim($result[0]) . "</dt><dd>" . self::make_list($definition) . "</dd>";
             } else {
                 print "<dt>" . trim($result[0]) . "</dt><dd>" . trim($definition) . "</dd>";
             }
