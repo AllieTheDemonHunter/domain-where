@@ -13,7 +13,7 @@ try {
     print "Shell access is not allowed on the operating system.";
 }
 
-$reporter = new _reporterRemote();
+$reporter = new _reporterRemote($_SERVER['SERVER_NAME']);
 $response['remote'] = $reporter;
 
 print json_encode($response);

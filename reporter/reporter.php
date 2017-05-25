@@ -1,7 +1,7 @@
 <?php
 
 namespace reporter;
-
+spl_autoload("convenience");
 define("SITE_REPORTER", "domain-where/reporter.php");
 define("GOOGLE_PSI_API_KEY", "AIzaSyANxegBGZ1GmVGTSyW8wRPgVh7MLrNQKJA");
 

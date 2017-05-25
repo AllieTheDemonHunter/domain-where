@@ -1,7 +1,7 @@
 <?php
 
 namespace reporter;
-spl_autoload("reporter");
+spl_autoload("reporter/reporter");
 
 class _reporterRemote extends reporter
 {
@@ -142,4 +142,4 @@ class _reporterRemote extends reporter
     }
 }
 
-new _reporterRemote();
+new _reporterRemote($_SERVER['SERVER_NAME']);
