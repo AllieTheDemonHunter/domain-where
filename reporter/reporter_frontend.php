@@ -77,7 +77,8 @@ class _reporterFrontend extends reporter
     protected function _query($this_type, $fixes)
     {
 
-        $this->domain = $this->domain . "/" . SITE_REPORTER . "?t=" . $this_type;
+        $url_info = parse_url($this->domain);
+        $this->domain = $url_info['scheme'] . "://" . $url_info['host'] . "/" . SITE_REPORTER . "?t=" . $this_type;
         $json_from_server = $this->curl_fetch();
 
         if (is_object($json_from_server) && isset($json_from_server->response->v)) {
