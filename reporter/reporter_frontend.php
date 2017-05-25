@@ -1,7 +1,7 @@
 <?php
 
 namespace reporter;
-spl_autoload("reporter");
+spl_autoload("reporter/reporter");
 
 class reporterFrontend extends reporter
 {
