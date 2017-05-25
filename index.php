@@ -5,8 +5,9 @@
  * Date: 17/05/16
  * Time: 6:18 PM
  */
-
 use reporter\reporterFrontend;
+include_once "reporter/convenience.php";
+include_once "reporter/reporter_frontend.php";
 ?>
 
 <!DOCTYPE html>
