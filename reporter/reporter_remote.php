@@ -9,9 +9,9 @@ class _reporterRemote extends reporter
     public $web_root = "/usr/home/%s/public_html";
     public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
 
-    public function __construct()
+    public function __construct($domain)
     {
-        parent::__construct(remote);
+        parent::__construct($domain);
         $this->user = trim(`whoami`);
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
