@@ -1,3 +1,14 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: allie
+ * Date: 17/05/16
+ * Time: 6:18 PM
+ */
+
+use reporter\reporterFrontend;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,33 +20,18 @@
 <body>
 <div id="wrapper">
 <?php
-/**
- * Created by PhpStorm.
- * User: allie
- * Date: 17/05/16
- * Time: 6:18 PM
- */
-include_once "settings.php";
-include_once "functions.php";
 
-$domains[] = "http://z-dspsa.co.za.dedi179.cpt3.host-h.net";
+$domains["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"] = TRUE;
+$domains["https://ezrails.co.za/"] = FALSE;
+$domains["https://www.ferreirapartners.co.za"] = FALSE;
+$domains["http://www.asinteriordesign.co.za"] = FALSE;
 
-/*$domains[] = "https://ezrails.co.za/";
-$domains[] = "https://www.ferreirapartners.co.za";
-$domains[] = "http://www.asinteriordesign.co.za";*/
-
-foreach ($domains as $domain) {
-    $time_taken = 0;
-    $start_time = 0;
-    $end_time = 0;
-
-    $start_time = time() + microtime();
-    $data = query(["analytics", "cpu", "ram", "disk", "drush", "psi"], $domain);
-    $end_time = time() + microtime();
-
-
-    $time_taken = ($end_time - $start_time);
-    print process($data, $time_taken);
+foreach ($domains as $domain => $active) {
+    if($active) {
+        $start_time = time() + microtime();
+        $report = new reporterFrontend($domain);
+        $report->query(["analytics", "cpu", "ram", "disk", "drush", "psi"])->process($start_time);
+    }
 }
 ?>
 </div>
