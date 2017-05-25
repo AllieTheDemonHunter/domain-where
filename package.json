@@ -1,0 +1,20 @@
+{
+  "name": "aucor",
+  "version": "0.0.1",
+  "devDependencies": {
+    "embittered": "0.0.9",
+    "gulp": "^3.9.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-sass": "*",
+    "gulp-shell": "^0.5.2",
+    "gulp-autoprefixer": "^2.3.1",
+    "gulp-sourcemaps": "^2.3.1",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "*",
+    "gulp-watch": "*",
+    "node-bourbon": "^4.2.8",
+    "node-neat": "^1.7.2",
+    "node-refills": "^1.0.1",
+    "rimraf": "*"
+  }
+}
