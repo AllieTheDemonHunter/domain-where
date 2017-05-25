@@ -11,7 +11,7 @@ class _reporterRemote extends reporter
 
     public function __construct()
     {
-        parent::__construct();
+        parent::__construct(remote);
         $this->user = trim(`whoami`);
         // Replace in the user name into string.
         // Note that if a webroot argument is passed, it's assumed that the user part is already present.
@@ -141,3 +141,5 @@ class _reporterRemote extends reporter
         return TRUE;
     }
 }
+
+new _reporterRemote();

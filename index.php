@@ -22,7 +22,8 @@ include_once "reporter/reporter_frontend.php";
 <div id="wrapper">
 <?php
 
-$domains["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"] = TRUE;
+$domains["http://allie.local"] = TRUE;
+$domains["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"] = FALSE;
 $domains["https://ezrails.co.za/"] = FALSE;
 $domains["https://www.ferreirapartners.co.za"] = FALSE;
 $domains["http://www.asinteriordesign.co.za"] = FALSE;
