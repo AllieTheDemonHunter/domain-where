@@ -1,7 +1,8 @@
 <?php
 
 namespace reporter;
-spl_autoload("convenience");
+include_once "convenience.php";
+
 define("SITE_REPORTER", "domain-where/reporter.php");
 define("GOOGLE_PSI_API_KEY", "AIzaSyANxegBGZ1GmVGTSyW8wRPgVh7MLrNQKJA");
 
@@ -14,7 +15,7 @@ class reporter
     use convenience;
     public $response = [];
     public $domain = "";
-    public $version = "v0.62";
+    public $version = "v0.7";
     protected $curl = NULL;
 
     /**

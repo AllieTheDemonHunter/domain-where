@@ -1,7 +1,9 @@
 <?php
 
 namespace reporter;
-spl_autoload("reporter/reporter");
+include_once "convenience.php";
+include_once "reporter.php";
+spl_autoload_register();
 
 /**
  * Class reporterFrontend

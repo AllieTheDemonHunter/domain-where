@@ -1,10 +1,14 @@
 <?php
 
 namespace reporter;
-spl_autoload("reporter/reporter");
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+include_once "convenience.php";
+include_once "reporter.php";
+spl_autoload_register();
+
 class _reporterRemote extends reporter
 {
     public $user;

@@ -7,7 +7,6 @@
  */
 
 namespace reporter;
-spl_autoload("reporter/reporter");
 
 trait convenience
 {

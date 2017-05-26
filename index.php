@@ -5,9 +5,12 @@
  * Date: 17/05/16
  * Time: 6:18 PM
  */
-use reporter\_reporterFrontend;
+namespace reporter;
+
 include_once "reporter/convenience.php";
+include_once "reporter/reporter.php";
 include_once "reporter/reporter_frontend.php";
+spl_autoload_register();
 ?>
 
 <!DOCTYPE html>
