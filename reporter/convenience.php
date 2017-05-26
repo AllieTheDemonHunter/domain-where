@@ -49,7 +49,7 @@ trait convenience
                     'Content-Type: application/json')
             );
             $this->curl = $curl;
-            return $curl;
+            return TRUE;
         }
 
         return FALSE;

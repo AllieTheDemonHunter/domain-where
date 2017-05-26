@@ -61,7 +61,7 @@ class reporter
             if (is_resource($this->curl)) {
                 curl_close($this->curl);
             }
-            $this->curl = $this->curl_init($domain);
+            $this->curl_init($domain);
         } else {
             /**
              * This is the default route.
@@ -69,7 +69,7 @@ class reporter
             if (is_resource($this->curl)) {
                 return TRUE;
             } elseif (isset($this->domain) && $this->domain != "") {
-                $this->curl = $this->curl_init($this->domain);
+                $this->curl_init($this->domain);
             }
         }
 

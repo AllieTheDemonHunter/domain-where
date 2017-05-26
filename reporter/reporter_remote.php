@@ -29,8 +29,6 @@ class _reporterRemote extends reporter
 
     public function report()
     {
-        header('Content-Type: application/json; charset=utf-8');
-        header("Transfer-Encoding: identity");
         $infoSource = $_SERVER['REQUEST_METHOD'] == "POST" ? $this->getInputFromRequestBody() : ($_SERVER['REQUEST_METHOD'] == "GET" ? $_GET : array());
         if (!array_key_exists("t", $infoSource)) {
             $infoSource["t"] = "cpu";
