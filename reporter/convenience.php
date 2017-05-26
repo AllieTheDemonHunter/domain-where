@@ -39,14 +39,16 @@ trait convenience
      * @param $domain
      * @return bool|resource
      */
-    public static function curl_init($domain)
+    public function curl_init($domain)
     {
-        $curl = curl_init($domain);
-        if (is_resource($curl)) {
+
+        if (!is_resource($this->curl)) {
+            $curl = curl_init($domain);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json')
             );
+            $this->curl = $curl;
             return $curl;
         }
 
