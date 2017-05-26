@@ -2,7 +2,9 @@
 
 namespace reporter;
 spl_autoload("reporter/reporter");
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 class _reporterRemote extends reporter
 {
     public $user;
