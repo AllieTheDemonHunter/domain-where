@@ -14,4 +14,4 @@ try {
 $reporter = new _reporterRemote($_SERVER['SERVER_NAME']);
 $response['remote'] = $reporter;
 
-json_encode($reporter);
+print json_encode($reporter);
