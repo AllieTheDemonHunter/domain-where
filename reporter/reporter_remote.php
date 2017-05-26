@@ -30,6 +30,7 @@ class _reporterRemote extends reporter
     public function report()
     {
         header('Content-Type: application/json; charset=utf-8');
+        header("Transfer-Encoding: identity");
         $infoSource = $_SERVER['REQUEST_METHOD'] == "POST" ? $this->getInputFromRequestBody() : ($_SERVER['REQUEST_METHOD'] == "GET" ? $_GET : array());
         if (!array_key_exists("t", $infoSource)) {
             $infoSource["t"] = "cpu";
@@ -78,11 +79,6 @@ class _reporterRemote extends reporter
                     $this->response[$report_type]["e"] = "Disk: File system mounting path was not specified.";
                 } else {
                     $dfData = `df -h`;
-                    if (array_key_exists("dbg", $_GET)) {
-                        echo exec('whoami');
-                        echo "\r\n";
-                        echo $dfData;
-                    }
                     if (is_null($dfData)) {
                         $this->response[$report_type]["e"] = "Disk: <code>shell_exec</code> is denied on server.";
                     } else {

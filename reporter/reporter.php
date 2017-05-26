@@ -85,7 +85,7 @@ class reporter
         if (!is_resource($this->curl)) {
             $this->curl_connect();
         }
-        $returned_from_server = @curl_exec($this->curl);
+        $returned_from_server = curl_exec($this->curl);
 
         if ($returned_from_server != "") {
             $json_from_server = json_decode($returned_from_server);

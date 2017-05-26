@@ -44,6 +44,9 @@ trait convenience
         $curl = curl_init($domain);
         if (is_resource($curl)) {
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json')
+            );
             return $curl;
         }
 

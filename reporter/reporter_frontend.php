@@ -2,7 +2,7 @@
 
 namespace reporter;
 include_once "convenience.php";
-include_once "reporter.php";
+//include_once "reporter.php";
 spl_autoload_register();
 
 /**
@@ -195,7 +195,7 @@ class _reporterFrontend extends reporter
             //Server metrics
             print $the_value;
             if (is_numeric($the_value)) {
-               // print "%";
+                print "%";
             }
         }
 

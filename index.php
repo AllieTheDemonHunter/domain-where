@@ -35,7 +35,8 @@ foreach ($domains as $domain => $active) {
     if($active) {
         $start_time = time() + microtime();
         $report = new _reporterFrontend($domain);
-        $report->query(["analytics", "cpu", "ram", "disk", "drush", "psi"])->process($start_time);
+        $report->query(["cpu", "ram", "disk", "drush", "psi"])->process($start_time);
+        unset($report);
     }
 }
 ?>
