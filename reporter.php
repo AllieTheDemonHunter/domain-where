@@ -1,6 +1,7 @@
 <?php
 
 namespace reporter;
+include_once "reporter/reporter.php";
 include_once "reporter/reporter_remote.php";
 
 ini_set('display_errors', 1);
