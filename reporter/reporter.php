@@ -91,9 +91,7 @@ class reporter
             $json_from_server = json_decode($returned_from_server);
 
             // TODO: This is probably going to break.
-            if (json_encode($json_from_server) === $returned_from_server) {
-                return $json_from_server;
-            }
+            return $json_from_server;
         }
 
         if (is_string($returned_from_server)) {
