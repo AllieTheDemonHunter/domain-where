@@ -74,7 +74,7 @@ class _reporterFrontend extends reporter
      * @param $fixes
      * @return bool|string
      */
-    protected function _query($this_type, $fixes)
+    private function _query($this_type, $fixes)
     {
 
         $url_info = parse_url($this->domain);

@@ -8,7 +8,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(-1);
 
 try {
-    $response['update'] = `git pull`;
+    $response['update'] = `git checkout master && git pull`;
 } catch (Exception $e) {
     print "Shell access is not allowed on the operating system.";
 }

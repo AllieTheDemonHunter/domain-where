@@ -37,7 +37,7 @@ class _reporterRemote extends reporter
             case ("cpu"): {
                 $topData = `top -b -n 4 -d 01.00 -i`;
                 if (is_null($topData)) {
-                    $this->response[$report_type]["e"] = "cpu: shell_exec is denied on server";
+                    $this->response[$report_type]["e"] = "CPU: <code>shell_exec</code> is denied on server";
                 } else {
                     if (preg_match_all('|([\.\d]*)%?\s*?id|m', $topData, $data)) {
                         $sum = 0;
@@ -45,7 +45,7 @@ class _reporterRemote extends reporter
                             $sum += (float)$value;
                         $this->response[$report_type]["v"] = round(100.0 - $sum / 4, 2);
                     } else {
-                        $this->response[$report_type]["e"] = "top command returned an unexpected result";
+                        $this->response[$report_type]["e"] = "CPU: <code>top</code> command returned an unexpected result.";
                     }
                 }
                 break;
@@ -54,22 +54,22 @@ class _reporterRemote extends reporter
             case ("ram"): {
                 $freeData = `free -k`;
                 if (is_null($freeData)) {
-                    $this->response[$report_type]["e"] = "shell_exec is denied on server";
+                    $this->response[$report_type]["e"] = "RAM: <code>shell_exec</code> is denied on server.";
                 } else {
                     if (preg_match('/^.*?\n.*?\s(\d+)\s*(\d+)\s*(\d+)\s.*/m', $freeData, $data)
                     ) {
                         $this->response[$report_type]["v"] = round(100.0 - ((float)$data[3] / (float)$data[1]) * 100.0, 2);
                     } else {
-                        $this->response[$report_type]["e"] = "free command returned unexpected result";
+                        $this->response[$report_type]["e"] = "RAM: <code>free</code> command returned unexpected result";
                     }
                 }
                 break;
             }
 
-            case ("disk"): //file system
+            case ("disk"):
             {
                 if (!array_key_exists("l", $infoSource)) {
-                    $this->response[$report_type]["e"] = "file system mounting path was not specified";
+                    $this->response[$report_type]["e"] = "Disk: File system mounting path was not specified.";
                 } else {
                     $dfData = `df -h`;
                     if (array_key_exists("dbg", $_GET)) {
@@ -78,7 +78,7 @@ class _reporterRemote extends reporter
                         echo $dfData;
                     }
                     if (is_null($dfData)) {
-                        $this->response[$report_type]["e"] = "shell_exec is denied on server";
+                        $this->response[$report_type]["e"] = "Disk: <code>shell_exec</code> is denied on server.";
                     } else {
                         $numOfFsFound = preg_match_all('/([0-9][0-9]?0?)%\s+?([^\s]+)/', $dfData, $data);
                         if ($numOfFsFound !== FALSE && $numOfFsFound > 0) {
@@ -86,10 +86,10 @@ class _reporterRemote extends reporter
                             if ($fsFound !== FALSE && $fsFound >= 0) {
                                 $this->response[$report_type]["v"] = round((float)$data[1][$fsFound], 2);
                             } else {
-                                $this->response[$report_type]["e"] = "file system for path '{$infoSource["l"]}' not found";
+                                $this->response[$report_type]["e"] = "Disk: file system for path '{$infoSource["l"]}' not found.";
                             }
                         } else {
-                            $this->response[$report_type]["e"] = "file system for path '{$infoSource["l"]}' not found";
+                            $this->response[$report_type]["e"] = "Disk: ile system for path '{$infoSource["l"]}' not found.";
                         }
                     }
                 }
@@ -133,7 +133,7 @@ class _reporterRemote extends reporter
                         }
                     }
                 } else {
-                    $this->response[$command]['e'] = "No data.";
+                    $this->response[$command]['e'] = "Drush: No data returned.";
                 }
             }
         }
