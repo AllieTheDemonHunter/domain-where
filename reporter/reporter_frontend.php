@@ -195,7 +195,7 @@ class _reporterFrontend extends reporter
             //Server metrics
             print $the_value;
             if (is_numeric($the_value)) {
-                print "%";
+               // print "%";
             }
         }
 
