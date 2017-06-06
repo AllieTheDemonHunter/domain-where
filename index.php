@@ -27,6 +27,7 @@ spl_autoload_register();
 
 $domains["http://allie.local"] = FALSE;
 $domains["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"] = TRUE;
+$domains["http://dsp"] = TRUE;
 $domains["https://ezrails.co.za/"] = FALSE;
 $domains["https://www.ferreirapartners.co.za"] = FALSE;
 $domains["http://www.asinteriordesign.co.za"] = FALSE;
@@ -35,7 +36,7 @@ foreach ($domains as $domain => $active) {
     if($active) {
         $start_time = time() + microtime();
         $report = new _reporterFrontend($domain);
-        $report->query(["cpu", "ram", "disk", "drush", "psi"])->process($start_time);
+        $report->query(["loadaverage", "disk", "drush", "psi"])->process($start_time);
         unset($report);
     }
 }
