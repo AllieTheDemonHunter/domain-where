@@ -178,14 +178,14 @@ class _reporterFrontend extends reporter {
       return FALSE;
     }
     print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
-    print "<div class='update-status'><em>" . nl2br(trim($reporter->update)) . "</em> @ " . $reporter->info->version . "</div>";
+    print "<div class='update-status'><em>" . nl2br(trim($reporter->update)) . "</em> @ " . $reporter->remote->version . "</div>";
 
-    if (isset($reporter->info->response->v)) {
+    if (isset($reporter->remote->response->$type_of_report->v)) {
       $value_or_error = "v";
     }
 
     print "<div class='value $value_or_error'>";
-    $the_value = $reporter->info->response->$value_or_error;
+    $the_value = $reporter->remote->response->$type_of_report->$value_or_error;
 
     if (is_array($the_value)) {
       //Drush

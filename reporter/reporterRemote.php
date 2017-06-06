@@ -57,19 +57,13 @@ class _reporterRemote extends reporter {
       }
 
       case ("disk"): {
-        if (!array_key_exists("l", $infoSource)) {
-          $this->response[$report_type]["e"] = "Disk: File system mounting path was not specified.";
-        }
-        else {
-          $dfData = disk_free_space("~");
-          if (is_null($dfData)) {
-            $this->response[$report_type]["e"] = "Disk: <code>shell_exec</code> is denied on server.";
-          } elseif ($dfData > 0) {
-              $this->response[$report_type]["v"] = $dfData;
-          } else {
-              $this->response[$report_type]["e"] = "Disk: file system for path '{$infoSource["l"]}' not found.";
-          }
-
+        $dfData = disk_free_space("~");
+        if (is_null($dfData)) {
+          $this->response[$report_type]["e"] = "<code>disk_free_space()</code> is denied on server.";
+        } elseif ($dfData > 0) {
+            $this->response[$report_type]["v"] = $dfData;
+        } else {
+            $this->response[$report_type]["e"] = "Disk: file system for path '{$infoSource["l"]}' not found.";
         }
         break;
       }
