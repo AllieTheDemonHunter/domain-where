@@ -132,7 +132,7 @@ class _reporterFrontend extends reporter {
 
         default:
           //Assumed to be a reporter object.
-          $this->_process_reporter($type_of_report, $reporter);
+          $this->_process_reporter($type_of_report, $reporter->response->$type_of_report);
       }
       print "</div>";
     }
