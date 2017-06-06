@@ -60,7 +60,7 @@ class _reporterRemote extends reporter {
         $here = getcwd();
         $free_space = disk_free_space($here);
         $total_space = disk_total_space($here);
-        $disk_free_space_percentage = ($total_space - $free_space) / $total_space;
+        $disk_free_space_percentage = pow(-1, (($total_space - $free_space) / $total_space));
         if (is_null($disk_free_space_percentage)) {
           $this->response[$report_type]["e"] = "<code>disk_free_space()</code> is denied on server.";
         } elseif ($disk_free_space_percentage > 0) {
