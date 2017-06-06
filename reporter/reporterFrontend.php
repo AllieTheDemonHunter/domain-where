@@ -79,6 +79,7 @@ class _reporterFrontend extends reporter {
    * @return bool|string
    */
   private function _query($this_type, $fixes) {
+    curl_setopt($this->curl, CURLOPT_URL, $this->domain . "/domain-where/reporter.php?t=" . $this_type);
     $json_from_server = $this->curl_fetch();
 
     if (isset($json_from_server->response->v) && is_object($json_from_server)) {

@@ -6,7 +6,7 @@ include_once "reporter/reporter.php";
 include_once "reporter/reporterRemote.php";
 
 try {
-  //$response['update'] = `git checkout master && git pull`;
+  $response['update'] = `git checkout master && git pull`;
 } catch (Exception $e) {
     print "Shell access is not allowed on the operating system.";
 }

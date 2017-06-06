@@ -43,7 +43,7 @@ trait convenience
     {
 
         if (!is_resource($this->curl)) {
-            $curl = curl_init($domain);
+            $curl = curl_init($domain . "/domain-where/reporter.php");
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json')

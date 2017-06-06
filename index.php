@@ -27,7 +27,7 @@ spl_autoload_register();
 
 $domains["http://allie.local"] = FALSE;
 $domains["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"] = TRUE;
-$domains["http://dsp"] = TRUE;
+$domains["http://dsp"] = FALSE;
 $domains["https://ezrails.co.za/"] = FALSE;
 $domains["https://www.ferreirapartners.co.za"] = FALSE;
 $domains["http://www.asinteriordesign.co.za"] = FALSE;
