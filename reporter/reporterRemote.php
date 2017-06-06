@@ -57,13 +57,13 @@ class _reporterRemote extends reporter {
       }
 
       case ("disk"): {
-        $dfData = disk_free_space("~");
+        $free_space = disk_free_space("/");
+        $total_space = disk_total_space("/");
+        $disk_free_space_percentage = ($total_space - $free_space) / $total_space;
         if (is_null($dfData)) {
           $this->response[$report_type]["e"] = "<code>disk_free_space()</code> is denied on server.";
         } elseif ($dfData > 0) {
             $this->response[$report_type]["v"] = $dfData;
-        } else {
-            $this->response[$report_type]["e"] = "Disk: file system for path '{$infoSource["l"]}' not found.";
         }
         break;
       }
