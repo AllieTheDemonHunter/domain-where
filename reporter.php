@@ -16,4 +16,4 @@ $response['remote'] = $reporter;
 
 //header('Content-Type: application/json; charset=utf-8;');
 //header("Transfer-Encoding: identity;");
-print json_encode($reporter);
+print json_encode($response);
