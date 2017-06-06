@@ -9,7 +9,7 @@ namespace reporter;
 
 include_once "reporter/convenience.php";
 include_once "reporter/reporter.php";
-include_once "reporter/reporter_frontend.php";
+include_once "reporter/reporterFrontend.php";
 spl_autoload_register();
 ?>
 

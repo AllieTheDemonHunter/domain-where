@@ -1,0 +1,10 @@
+{
+  "user": "zdspsarazz",
+  "web_root": "\/usr\/home\/zdspsarazz\/public_html",
+  "drush_root": "\/usr\/home\/zdspsarazz\/vendor\/bin\/drush.php",
+  "response": {
+    "drush": true
+  },
+  "domain": "z-dspsa.co.za",
+  "version": "v0.7"
+}
