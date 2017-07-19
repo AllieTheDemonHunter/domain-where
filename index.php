@@ -26,10 +26,10 @@ spl_autoload_register();
 <?php
 
 $domains["http://allie.local"] = FALSE;
-$domains["http://z-dspsa.co.za.dedi179.cpt3.host-h.net"] = TRUE;
+$domains["http://aucor.com"] = FALSE;
 $domains["http://dsp"] = FALSE;
 $domains["https://ezrails.co.za/"] = FALSE;
-$domains["https://www.ferreirapartners.co.za"] = FALSE;
+$domains["https://www.ferreirapartners.co.za"] = TRUE;
 $domains["http://www.asinteriordesign.co.za"] = FALSE;
 
 foreach ($domains as $domain => $active) {

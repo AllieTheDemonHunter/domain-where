@@ -51,7 +51,7 @@ class _reporterRemote extends reporter {
             = "<code>sys_getloadavg()</code> is denied on server.";
         }
         else {
-            $this->response[$report_type]["v"] = implode(" | ", $topData);
+          $this->response[$report_type]["v"] = implode(" | ", $topData);
         }
         break;
       }
@@ -63,8 +63,9 @@ class _reporterRemote extends reporter {
         $disk_free_space_percentage = pow(-1, (($total_space - $free_space) / $total_space));
         if (is_null($disk_free_space_percentage)) {
           $this->response[$report_type]["e"] = "<code>disk_free_space()</code> is denied on server.";
-        } elseif ($disk_free_space_percentage > 0) {
-            $this->response[$report_type]["v"] = $disk_free_space_percentage;
+        }
+        elseif ($disk_free_space_percentage > 0) {
+          $this->response[$report_type]["v"] = $disk_free_space_percentage;
         }
         break;
       }

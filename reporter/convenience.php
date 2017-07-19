@@ -55,12 +55,6 @@ trait convenience
         return FALSE;
     }
 
-    public static function microtime_float()
-    {
-        list($usec, $sec) = explode(" ", microtime());
-        return ((float)$usec + (float)$sec);
-    }
-
     public static function getInputFromRequestBody()
     {
         $body = file_get_contents('php://input');

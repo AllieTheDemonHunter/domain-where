@@ -4,6 +4,9 @@ namespace reporter;
 
 include_once "convenience.php";
 
+/**
+ *
+ */
 define("SITE_REPORTER", "domain-where/reporter.php");
 define("GOOGLE_PSI_API_KEY", "AIzaSyANxegBGZ1GmVGTSyW8wRPgVh7MLrNQKJA");
 
@@ -33,14 +36,19 @@ class reporter {
     $this->domain = $domain;
   }
 
+  /**
+   *
+   */
   public function __destruct() {
     if (is_resource($this->curl)) {
       curl_close($this->curl);
     }
   }
 
-
-  public function request_psi() {
+  /**
+   *
+   */
+  final public function request_psi() {
     $psi_url_string = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url={$this->domain}/&strategy=mobile&screenshot=true&key=" . GOOGLE_PSI_API_KEY;
     $this->curl_connect($psi_url_string); // New connection.
     $psi_object = $this->curl_fetch();
@@ -56,7 +64,7 @@ class reporter {
    *
    * @return resource | bool
    */
-  protected function curl_connect($domain = "") {
+  final protected function curl_connect($domain = "") {
     /**
      * If $domain is set, we're dropping the old connection,
      * and making a new one (because we're changing URLs).
@@ -86,7 +94,10 @@ class reporter {
     return FALSE;
   }
 
-  protected function curl_fetch() {
+  /**
+   * @return bool|mixed
+   */
+  final protected function curl_fetch() {
     if (!is_resource($this->curl)) {
       $this->curl_connect();
     }
@@ -105,17 +116,28 @@ class reporter {
     return FALSE;
   }
 
+  /**
+   *
+   */
   public function request_analytics() {
     $html_from_server = $this->curl_fetch(); //No variables specified should return the site's html.
     $outcome = $this->_is_analytics($html_from_server);
     $this->response['analytics'] = $outcome ? "Analytics code found: " . $outcome : "No Analytics found.";
   }
 
-  public static function _is_analytics($str) {
+  /**
+   * @param $str
+   *
+   * @return bool|string
+   */
+  public static function _is_analytics(string $str) {
     preg_match('/GTM-[\w\d]{6,9}/im', strval($str), $matches);
     return $matches ? count($matches) . " match: " . $matches[0] : FALSE;
   }
 
+  /**
+   * @return string
+   */
   function __toString() {
     // TODO: Implement __toString() method.
     return "This class doesn't output strings.";
