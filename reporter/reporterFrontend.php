@@ -6,14 +6,14 @@ include_once "convenience.php";
 spl_autoload_register();
 
 /**
- * Class reporterFrontend
+ * _reporterFrontend is the client side controller which processes data returned remotely.
  *
  * @package reporter
  */
 class _reporterFrontend extends reporter {
 
   /**
-   * reporterFrontend constructor.
+   * reporterFrontend starts off by launching its parent and then connecting.
    *
    * @param $domain
    */
@@ -23,10 +23,13 @@ class _reporterFrontend extends reporter {
   }
 
   /**
+   * Run all the registered requests.
+   *
    * @param array $type
    *
    * @return $this
    */
+  //@TODO This function has mixed functionality that has to get encapsulated.
   public function query(array $type) {
     $url_variables = [];
 
@@ -73,6 +76,7 @@ class _reporterFrontend extends reporter {
   }
 
   /**
+   * Called by $this->query()
    * @param $this_type
    * @param $fixes
    *
@@ -98,6 +102,7 @@ class _reporterFrontend extends reporter {
   }
 
   /**
+   * Starts output and runs the reporting action.
    * @param $start_time
    */
   function process($start_time) {
@@ -112,6 +117,7 @@ class _reporterFrontend extends reporter {
   }
 
   /**
+   * Iteratively run private report functions.
    * @param $report
    */
   private function _process_report($report) {
@@ -139,6 +145,7 @@ class _reporterFrontend extends reporter {
   }
 
   /**
+   * Checks, validates and builds markup for Google Page Speed Insights.
    * @param $report
    */
   private function _process_psi($report) {
@@ -169,17 +176,21 @@ class _reporterFrontend extends reporter {
    * @param $reporter
    *
    * @return bool
+   * @throws \Exception
    */
   private function _process_reporter($type_of_report, $reporter) {
+    //Error flag default set to error.
     $value_or_error = "e";
 
     if (!is_object($reporter)) {
-      print "<b>$type_of_report:</b><br> No remote reporter.php file found.";
-      return FALSE;
+      $object_error_message = sprintf("<b>%s</b><br> Reporter object error. Check remote reporter.php file.", $type_of_report);
+      throw new \Exception($object_error_message, E_ERROR);
     }
+
     print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
     print "<div class='update-status'><em>" . nl2br(trim($reporter->update)) . "</em> @ " . $reporter->remote->version . "</div>";
 
+    //Error flag update, set to 'value'.
     if (isset($reporter->remote->response->$type_of_report->v)) {
       $value_or_error = "v";
     }
