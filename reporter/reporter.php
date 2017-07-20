@@ -60,20 +60,21 @@ class reporter {
   }
 
   /**
-   * @param string $domain
+   * @param string $reset_domain_to
    *
    * @return resource | bool
    */
-  final protected function curl_connect($domain = "") {
+  //@TODO The $domain name isn't an accurate meaning of what the "flag status" vs "new connection" result is.
+  final protected function curl_connect($reset_domain_to = "") {
     /**
      * If $domain is set, we're dropping the old connection,
      * and making a new one (because we're changing URLs).
      */
-    if ($domain != "") {
+    if ($reset_domain_to != "") {
       if (is_resource($this->curl)) {
         curl_close($this->curl);
       }
-      $this->curl_init($domain);
+      $this->curl_init($reset_domain_to);
     }
     else {
       /**
@@ -130,7 +131,7 @@ class reporter {
    *
    * @return bool|string
    */
-  public static function _is_analytics(string $str) {
+  final public static function _is_analytics(string $str) {
     preg_match('/GTM-[\w\d]{6,9}/im', strval($str), $matches);
     return $matches ? count($matches) . " match: " . $matches[0] : FALSE;
   }

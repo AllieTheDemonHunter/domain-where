@@ -9,8 +9,6 @@ include_once "convenience.php";
 include_once "reporter.php";
 spl_autoload_register();
 
-new _reporterRemote($_SERVER['SERVER_NAME']);
-
 class _reporterRemote extends reporter {
 
   public $user;
