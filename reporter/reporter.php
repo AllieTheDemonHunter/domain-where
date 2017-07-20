@@ -5,13 +5,13 @@ namespace reporter;
 include_once "convenience.php";
 
 /**
- *
+ * Constants
  */
 define("SITE_REPORTER", "domain-where/reporter.php");
 define("GOOGLE_PSI_API_KEY", "AIzaSyANxegBGZ1GmVGTSyW8wRPgVh7MLrNQKJA");
 
 /**
- * Class reporter
+ * Manages reporting and remote connections.
  *
  * @package reporter
  */
@@ -23,12 +23,12 @@ class reporter {
 
   public $domain = "";
 
-  public $version = "v0.7";
+  public $version = "v0.8";
 
   protected $curl = NULL;
 
   /**
-   * reporter constructor.
+   * Set domain to be queried.
    *
    * @param $domain
    */
@@ -37,7 +37,7 @@ class reporter {
   }
 
   /**
-   *
+   * Closes the Curl connection.
    */
   public function __destruct() {
     if (is_resource($this->curl)) {
@@ -46,7 +46,7 @@ class reporter {
   }
 
   /**
-   *
+   * Query Google's Page Speed Insights (resets connection to new URL)
    */
   final public function request_psi() {
     $psi_url_string = "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?url={$this->domain}/&strategy=mobile&screenshot=true&key=" . GOOGLE_PSI_API_KEY;
@@ -57,14 +57,18 @@ class reporter {
       unset($psi_object->formattedResults);
       $this->response['psi'] = $psi_object;
     }
+    else {
+      throw new \Exception("The remote server returned an error page.", E_USER_WARNING);
+    }
   }
 
   /**
+   * Returns or resets current curl connection.
+   *
    * @param string $reset_domain_to
    *
    * @return resource | bool
    */
-  //@TODO The $domain name isn't an accurate meaning of what the "flag status" vs "new connection" result is.
   final protected function curl_connect($reset_domain_to = "") {
     /**
      * If $domain is set, we're dropping the old connection,
@@ -96,6 +100,8 @@ class reporter {
   }
 
   /**
+   * Execute server transaction.
+   *
    * @return bool|mixed
    */
   final protected function curl_fetch() {
@@ -118,29 +124,35 @@ class reporter {
   }
 
   /**
+   * Nice to have magic method.
    *
+   * @return string
+   * @throws \Exception
    */
-  public function request_analytics() {
+  function __toString() {
+    // TODO: Implement __toString() method.
+    throw new \Exception("This class doesn't output strings.", E_USER_ERROR);
+  }
+
+  /**
+   * Looks through code and matches text patterns to check for Analytics etc.
+   */
+  //@TODO This should be generalised to "parse_and_match, run_text_scans", or the like. So it could be used to match any/all requested "scans".
+  protected function request_analytics() {
     $html_from_server = $this->curl_fetch(); //No variables specified should return the site's html.
-    $outcome = $this->_is_analytics($html_from_server);
+    $outcome = $this->is_analytics($html_from_server);
     $this->response['analytics'] = $outcome ? "Analytics code found: " . $outcome : "No Analytics found.";
   }
 
   /**
+   * Finds and returns GTM- codes from text (markup usually).
+   *
    * @param $str
    *
    * @return bool|string
    */
-  final public static function _is_analytics(string $str) {
+  public static function is_analytics(string $str) {
     preg_match('/GTM-[\w\d]{6,9}/im', strval($str), $matches);
     return $matches ? count($matches) . " match: " . $matches[0] : FALSE;
-  }
-
-  /**
-   * @return string
-   */
-  function __toString() {
-    // TODO: Implement __toString() method.
-    return "This class doesn't output strings.";
   }
 }
