@@ -25,14 +25,24 @@ class _reporterRemote extends reporter {
     // Note that if a webroot argument is passed, it's assumed that the user part is already present.
     $this->web_root = $_SERVER['DOCUMENT_ROOT'];
 
-    try {
-      $this->drush_root = `which drush`;
-    } catch (\Exception $exception) {
-      $error = 's';
+    if(!$drush_root_hint) {
+      try {
+        $drush_root_hint = `which drush`;
+      } catch (\Exception $exception) {
+        $error = 's';
+      }
     }
 
+    if(!$drush_root_hint) {
+      $drush_root_hint = sprintf($this->drush_root,$this->user);
+    }
 
-    $this->drush_root = sprintf($this->drush_root,$this->user);
+    //Test
+    if(!file_exists($drush_root_hint)) {
+      $error = 'd';
+    }
+
+    $this->drush_root = $drush_root_hint;
 
     $this->report();
   }
@@ -49,8 +59,11 @@ class _reporterRemote extends reporter {
       ($_SERVER['REQUEST_METHOD'] == "GET" ? $_GET :
         []);
 
+    /**
+     * Default action if none is specified.
+     */
     if (!array_key_exists("t", $infoSource)) {
-      $infoSource["t"] = "cpu";
+      $infoSource["t"] = "loadaverage";
     }
 
     $report_type = $infoSource["t"];
