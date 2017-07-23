@@ -23,25 +23,27 @@ spl_autoload_register();
 </head>
 <body>
 <div id="wrapper">
-<?php
+  <?php
 
-$domains["http://allie.local"] = FALSE;
-$domains["http://aucor.com"] = FALSE;
-$domains["http://dsp"] = FALSE;
-$domains["https://ezrails.co.za/"] = FALSE;
-$domains["https://www.ferreirapartners.co.za"] = FALSE;
-$domains["http://www.asinteriordesign.co.za"] = FALSE;
-$domains["http://dtm"] = TRUE;
+  $domains["http://allie.local"] = FALSE;
+  $domains["http://aucor.com"] = FALSE;
+  $domains["http://dsp"] = FALSE;
+  $domains["https://ezrails.co.za/"] = FALSE;
+  $domains["https://www.ferreirapartners.co.za"] = FALSE;
+  $domains["http://www.asinteriordesign.co.za"] = FALSE;
+  $domains["http://dtm"] = TRUE;
 
-foreach ($domains as $domain => $active) {
-    if($active) {
-        $start_time = time() + microtime();
-        $report = new _reporterFrontend($domain);
-        $report->query(["loadaverage", "disk", "drush", "psi"])->process($start_time);
-        unset($report);
+  foreach ($domains as $domain => $active) {
+    if ($active) {
+      $start_time = time() + microtime();
+      $report = new _reporterFrontend($domain);
+      $report
+        ->query(["loadaverage", "disk", "drush", "psi"])
+        ->process($start_time);
+      unset($report);
     }
-}
-?>
+  }
+  ?>
 </div>
 </body>
 </html>
