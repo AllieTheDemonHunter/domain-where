@@ -19,6 +19,7 @@ class _reporterRemote extends reporter {
 
   public function __construct($domain) {
     parent::__construct($domain);
+    // @TODO Replace shell calls.
     $this->user = trim(`whoami`);
     // Replace in the user name into string.
     // Note that if a webroot argument is passed, it's assumed that the user part is already present.
@@ -28,6 +29,13 @@ class _reporterRemote extends reporter {
     $this->report();
   }
 
+
+  /**
+   * The run function.
+   * @return bool
+   */
+
+  // @TODO The amount of things this method does isn't defensible.
   public function report() {
     $infoSource = $_SERVER['REQUEST_METHOD'] == "POST" ? $this->getInputFromRequestBody() :
       ($_SERVER['REQUEST_METHOD'] == "GET" ? $_GET :
