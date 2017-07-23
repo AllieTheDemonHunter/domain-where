@@ -53,12 +53,12 @@ class reporter {
     $this->curl_connect($psi_url_string); // New connection.
     $psi_object = $this->curl_fetch();
 
-    if (isset($psi_object->responseCode) && $psi_object->responseCode == "200") {
+    try {
       unset($psi_object->formattedResults);
       $this->response['psi'] = $psi_object;
     }
-    else {
-      throw new \Exception("The remote server returned an error page.", E_USER_WARNING);
+    catch (\Exception $exception){
+      throw new \Exception("The remote server returned an error page.", E_RECOVERABLE_ERROR);
     }
   }
 

@@ -17,21 +17,29 @@ class _reporterRemote extends reporter {
 
   public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
 
-  public function __construct($domain) {
+  public function __construct($domain, $drush_root_hint = NULL) {
     parent::__construct($domain);
     // @TODO Replace shell calls.
-    $this->user = trim(`whoami`);
+    $this->user = get_current_user();
     // Replace in the user name into string.
     // Note that if a webroot argument is passed, it's assumed that the user part is already present.
-    $this->web_root = sprintf($this->web_root, $this->user);
-    $this->drush_root = sprintf($this->drush_root, $this->user);
+    $this->web_root = $_SERVER['DOCUMENT_ROOT'];
+
+    try {
+      $this->drush_root = `which drush`;
+    } catch (\Exception $exception) {
+      $error = 's';
+    }
+
+
+    $this->drush_root = sprintf($this->drush_root,$this->user);
 
     $this->report();
   }
 
-
   /**
    * The run function.
+   *
    * @return bool
    */
 
