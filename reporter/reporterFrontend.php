@@ -179,7 +179,7 @@ class _reporterFrontend extends reporter {
    * @return bool
    * @throws \Exception
    */
-  private function _process_reporter($type_of_report, object $reporter) {
+  private function _process_reporter($type_of_report, \stdClass $reporter) {
     //Error flag default set to error.
     $value_or_error = "e";
 
