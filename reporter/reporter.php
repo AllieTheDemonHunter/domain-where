@@ -34,6 +34,7 @@ class reporter {
    */
   public function __construct($domain) {
     $this->domain = $domain;
+    $this->version = $this->version . " @ " . date("F j, Y, g:i a");
   }
 
   /**
