@@ -124,6 +124,10 @@ class _reporterFrontend extends reporter {
   private function _process_report($reports) {
     foreach ($reports as $type_of_report => $reporter) {
       print "<div class='report $type_of_report'>";
+      if (!$reporter) {
+        print "problems";
+        continue;
+      }
       switch ($type_of_report) {
         case "psi":
           //type should be object

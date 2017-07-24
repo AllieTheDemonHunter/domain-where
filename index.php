@@ -29,9 +29,9 @@ spl_autoload_register();
   $domains["http://aucor.com"] = FALSE;
   $domains["http://dsp"] = FALSE;
   $domains["https://ezrails.co.za/"] = FALSE;
+  $domains["http://dtm"] = TRUE;
   $domains["https://www.ferreirapartners.co.za"] = TRUE;
   $domains["http://www.asinteriordesign.co.za"] = FALSE;
-  $domains["http://dtm"] = TRUE;
 
   foreach ($domains as $domain => $active) {
     if ($active) {
