@@ -5,11 +5,11 @@ include_once "reporter/convenience.php";
 include_once "reporter/reporter.php";
 include_once "reporter/reporterRemote.php";
 
-/*try {
+try {
   $response['update'] = `git checkout master && git pull`;
 } catch (Exception $e) {
     print "Shell access is not allowed on the operating system.";
-}*/
+}
 
 $reporter = new _reporterRemote($_SERVER['SERVER_NAME']);
 $response['remote'] = $reporter;
