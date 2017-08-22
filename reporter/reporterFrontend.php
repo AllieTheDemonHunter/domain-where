@@ -125,7 +125,7 @@ class _reporterFrontend extends reporter {
     foreach ($reports as $type_of_report => $reporter) {
       print "<div class='report $type_of_report'>";
       if (!$reporter) {
-        print "problems";
+        print "problems with report: " . $type_of_report;
         continue;
       }
       switch ($type_of_report) {
