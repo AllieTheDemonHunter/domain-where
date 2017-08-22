@@ -142,7 +142,5 @@ class _reporterRemote extends reporter {
         }
       }
     }
-
-    return TRUE;
   }
 }
