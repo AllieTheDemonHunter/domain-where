@@ -98,7 +98,7 @@ class _reporterRemote extends reporter {
 
   public function drush_request(array $commands) {
     foreach ($commands as $command => $keys) {
-      $drushData = `cd $this->web_root && php $this->drush_root $command`;
+      $drushData = `cd $this->web_root && drush $command`;
       if (is_null($drushData)) {
         $response[$command]['e'] = "Nothing here.";
       }
