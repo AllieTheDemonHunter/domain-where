@@ -15,14 +15,14 @@ class _reporterRemote extends reporter {
 
   public $web_root = "/usr/home/%s/public_html";
 
-  public $drush_root = "/usr/home/%s/vendor/bin/drush.php";
+  public $drush_root;
 
   public function __construct($domain, $drush_root_hint = NULL) {
     parent::__construct($domain);
     // @TODO Replace shell calls.
     $this->user = get_current_user();
     $this->web_root = $_SERVER['DOCUMENT_ROOT'];
-
+    $this->drush_root = `which drush`;
     $this->report();
   }
 
