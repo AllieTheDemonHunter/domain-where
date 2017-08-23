@@ -1,7 +1,6 @@
 <?php
 namespace reporter;
 
-include_once "vendor/autoload.php";
 include_once "reporter/convenience.php";
 include_once "reporter/reporter.php";
 include_once "reporter/reporterRemote.php";
