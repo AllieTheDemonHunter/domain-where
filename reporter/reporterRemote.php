@@ -21,28 +21,7 @@ class _reporterRemote extends reporter {
     parent::__construct($domain);
     // @TODO Replace shell calls.
     $this->user = get_current_user();
-    // Replace in the user name into string.
-    // Note that if a webroot argument is passed, it's assumed that the user part is already present.
     $this->web_root = $_SERVER['DOCUMENT_ROOT'];
-
-    if(!$drush_root_hint) {
-      try {
-        $drush_root_hint = `which drush`;
-      } catch (\Exception $exception) {
-        $error = 's';
-      }
-    }
-
-    if(!$drush_root_hint) {
-      $drush_root_hint = sprintf($this->drush_root,$this->user);
-    }
-
-    //Test
-    if(!file_exists($drush_root_hint)) {
-      $error = 'd';
-    }
-
-    $this->drush_root = $drush_root_hint;
 
     $this->report();
   }

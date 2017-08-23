@@ -47,22 +47,6 @@ class _reporterFrontend extends reporter {
         }
 
         default: {
-          $fixes['pre'][$this_type] = "";
-          $fixes['post'][$this_type] = "%";
-
-          switch ($this_type) {
-            case "disk": {
-              $url_variables['l'] = "/";
-              $fixes['post'][$this_type] = "%";
-              break; // this is being done in this switch statement, not the main one that contains it above.
-            }
-
-            default: {
-              $fixes['post'][$this_type] = "";
-              break;
-            }
-          }
-
           $url_variables['t'] = $this_type;
           $this->response[$this_type] = $this->_query($this_type, $fixes);
         }
@@ -86,13 +70,8 @@ class _reporterFrontend extends reporter {
     curl_setopt($this->curl, CURLOPT_URL, $this->domain . "/domain-where/reporter.php?t=" . $this_type);
     $json_from_server = $this->curl_fetch();
 
-    if (isset($json_from_server->response->v) && is_object($json_from_server)) {
-      if (is_object($json_from_server->response->v)) {
-        $response = $json_from_server->response->v;
-      }
-      else {
-        $response = $fixes['pre'][$this_type] . $json_from_server->response->v . $fixes['post'][$this_type];
-      }
+    if (isset($json_from_server->remote->response->$this_type->v) && is_object($json_from_server)) {
+      $response = $json_from_server->remote->response->$this_type->v;
     }
     else {
       $response = $json_from_server;
@@ -183,7 +162,7 @@ class _reporterFrontend extends reporter {
    * @return bool
    * @throws \Exception
    */
-  private function _process_reporter($type_of_report, \stdClass $reporter) {
+  private function _process_reporter($type_of_report, $reporter) {
     //Error flag default set to error.
     $value_or_error = "e";
 

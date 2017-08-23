@@ -6,7 +6,6 @@
  * Time: 6:18 PM
  */
 namespace reporter;
-
 include_once "reporter/convenience.php";
 include_once "reporter/reporter.php";
 include_once "reporter/reporterFrontend.php";
@@ -25,13 +24,7 @@ spl_autoload_register();
 <div id="wrapper">
   <?php
 
-  $domains["http://allie.local"] = FALSE;
-  $domains["http://aucor.com"] = FALSE;
-  $domains["http://dsp"] = FALSE;
-  $domains["https://ezrails.co.za/"] = FALSE;
-  $domains["http://dtm"] = FALSE;
-  $domains["https://www.ferreirapartners.co.za"] = TRUE;
-  $domains["http://www.asinteriordesign.co.za"] = FALSE;
+  $domains["http://10.10.50.25"] = 1;
 
   foreach ($domains as $domain => $active) {
     if ($active) {
