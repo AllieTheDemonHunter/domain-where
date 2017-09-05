@@ -49,11 +49,11 @@ trait convenience
      *
      * @return bool|resource
      */
-    public function curl_init($domain)
+    public function curl_init($domain, $uri = "/domain-where/reporter.php")
     {
 
         if (!is_resource($this->curl)) {
-            $curl = curl_init($domain . "/domain-where/reporter.php");
+            $curl = curl_init($domain . $uri);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($curl, CURLOPT_HTTPHEADER, [
                     'Content-Type: application/json',

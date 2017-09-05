@@ -94,8 +94,9 @@ class _reporterFrontend extends reporter
         $this->_process_reports($this->response);
         $end_time = time() + microtime();
         $time_taken = ($end_time - $start_time);
-        print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
-        print "</div>";
+        print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s";
+        print "<div class='update-status'>" . $this->version . "</div>";
+        print "</div></div>";
 
     }
 
@@ -186,7 +187,6 @@ class _reporterFrontend extends reporter
             $object_error_message = sprintf("<b>%s</b><br> Reporter object error. Check remote reporter.php file.", $type_of_report);
 
             print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
-            print "<div class='update-status'>" . $reporter->version . "</div>";
             $the_type = gettype($reporter->response->$type_of_report);
 
             switch ($the_type) {

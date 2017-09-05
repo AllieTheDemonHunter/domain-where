@@ -41,6 +41,7 @@ h3 {
 .time-taken {
   text-align: center;
   padding: 1em;
+  position: relative;
 }
 dt {
   text-transform: uppercase;
@@ -61,9 +62,7 @@ dt {
   text-align: center;
   border-radius: 2px;
   background-color: rgba(173, 216, 230, 0.34);
-  position: absolute;
-  top: -2em;
-  right: -0.8em;
+
   opacity: 0.2;
 }
 .update-status:hover {

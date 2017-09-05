@@ -31,7 +31,7 @@ spl_autoload_register();
       $start_time = time() + microtime();
       $report = new _reporterFrontend($domain);
       $report
-        ->query(["loadaverage", "disk", "drush", "psi"])
+        ->query(["loadaverage", "disk", "drush", "psi", "analytics"])
         ->process($start_time);
       unset($report);
     }
