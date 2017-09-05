@@ -179,39 +179,29 @@ class _reporterFrontend extends reporter
             print "<div class='update-status'>" . $reporter->version . "</div>";
             $the_type = gettype($reporter->response->$type_of_report);
 
-            switch($the_type){
+            switch ($the_type) {
                 case "object":
-                    $facets[] = $reporter->response->$type_of_report;
-                    break;
+                    //Error flag update, set to 'value'.
+                    if (isset($reporter->response->$type_of_report->v)) {
+                        $value_or_error = "v";
+                    }
 
-                case "array":
-                    $facets = $reporter->response->$type_of_report;
-                    break;
-                default:
-                    $facets = [];
-            }
-
-            foreach($facets as $some_metric) {
-                //Error flag update, set to 'value'.
-                if (isset($some_metric->v)) {
-                    $value_or_error = "v";
-                }
-
-                print "<div class='value $value_or_error'>";
-                $the_value = $some_metric->$value_or_error;
-
-                if (is_array($the_value)) {
-                    //Drush
-                    $this->make_list($the_value);
-                }
-                else {
+                    print "<div class='value $value_or_error'>";
+                    $the_value = $reporter->response->$type_of_report->$value_or_error;
                     //Server metrics
                     print $the_value;
                     if (is_numeric($the_value)) {
                         print "%";
                     }
-                }
+                    break;
+
+                case "array":
+                    //Drush
+                    $this->make_list($reporter->response->$type_of_report);
+
+                    break;
             }
+
         } catch (\Exception $exception) {
             throw new \Exception($object_error_message, E_ERROR);
         }
