@@ -101,6 +101,7 @@ class _reporterRemote extends reporter
     {
         $response = [];
         foreach ($commands as $command => $keys) {
+            print "drush --root=$this->web_root $command";
             $drushData = `drush --root=$this->web_root $command`;
             if (is_null($drushData)) {
                 $response[$command]['e'] = "Nothing here.";
