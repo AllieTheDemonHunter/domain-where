@@ -104,7 +104,8 @@ class _reporterRemote extends reporter
         foreach ($commands as $command => $keys) {
             $drushData = `php $this->drush_root --root=$this->web_root $command`;
             if (is_null($drushData)) {
-                $responses[] = $response[$command]['e'] = "Nothing here.";
+                //This doesn't get used / returned.
+                $response[$command]['e'] = "Nothing here.";
             } else {
                 $drushDataArray = explode(PHP_EOL, $drushData);
 
