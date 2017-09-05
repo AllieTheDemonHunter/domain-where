@@ -102,6 +102,7 @@ class _reporterRemote extends reporter
     {
         foreach ($commands as $command => $keys) {
             $drushData = `cd $this->web_root && drush $command`;
+            $response = [];
             if (is_null($drushData)) {
                 $response[$command]['e'] = "Nothing here.";
             } else {
@@ -118,11 +119,11 @@ class _reporterRemote extends reporter
                         }
                     }
                 } else {
-                    $this->response[$command]['e'] = "Drush: No data returned.";
+                    $response[$command]['e'] = "Drush: No data returned.";
                 }
             }
         }
 
-        return $this->response;
+        return $response;
   }
 }
