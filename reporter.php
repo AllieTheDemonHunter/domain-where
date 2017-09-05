@@ -57,11 +57,13 @@ if ($update_difference_in_seconds < $expiry_update_in_seconds) {
     $current_git_status = `git pull`;
     if ($current_git_status != "Already up-to-date.") {
         $updating = TRUE;
+    } else {
+        $updating = FALSE;
     }
 } else {
     $updating = FALSE;
 }
-$debug[] =  "UPDATE:" . $update_difference_in_seconds;
+$debug[] =  "UPDATE({$updating}):" . $update_difference_in_seconds;
 
 if ($cache_use && $updating) {
     $debug[] =  "Updating with a cached result.";
