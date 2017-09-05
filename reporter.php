@@ -9,7 +9,7 @@ $limit_in_seconds = $limit_in_minutes * 60;
 $then = `git log -1 --pretty=format:%ct`;
 $now = time();
 $difference_in_seconds = abs($then - $now);
-if($difference_in_seconds > $difference_in_seconds) {
+if($difference_in_seconds > $limit_in_seconds) {
     print `git pull`;
     die("updating");
 }
