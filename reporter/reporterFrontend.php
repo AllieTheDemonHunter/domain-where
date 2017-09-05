@@ -173,12 +173,12 @@ class _reporterFrontend extends reporter {
       print "<div class='update-status'><em>" . nl2br(trim($reporter->update)) . "</em> @ " . $reporter->remote->version . "</div>";
 
       //Error flag update, set to 'value'.
-      if (isset($reporter->remote->response->$type_of_report->v)) {
+      if (isset($reporter->response->$type_of_report->v)) {
         $value_or_error = "v";
       }
 
       print "<div class='value $value_or_error'>";
-      $the_value = $reporter->remote->response->$type_of_report->$value_or_error;
+      $the_value = $reporter->response->$type_of_report->$value_or_error;
 
       if (is_array($the_value)) {
         //Drush
