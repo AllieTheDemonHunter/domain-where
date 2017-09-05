@@ -16,7 +16,7 @@ class _reporterRemote extends reporter
 
     public $web_root;
 
-    public $drush_root = "/usr/home/%s/public_html";
+    public $drush_root = "/usr/home/%s/vendor/bin/drush";
 
     public function __construct($domain, $drush_root_hint = NULL)
     {
@@ -101,7 +101,7 @@ class _reporterRemote extends reporter
     {
         $response = [];
         foreach ($commands as $command => $keys) {
-            $drushData = `drush --root=$this->web_root $command && echo test`;
+            $drushData = `php $this->drush_root drush --root=$this->web_root $command`;
             if (is_null($drushData)) {
                 $response[$command]['e'] = "Nothing here.";
             } else {
