@@ -26,58 +26,55 @@ $now = time();
  *      Whether the code is being updated.
  *          0 = Not updating, SERVE CACHED
  *          1 = Updating, SERVE CACHED
-
- *
  */
-
 
 
 /**
  * Cache - refresh intervals.
  */
 $cache_file_expiry_in_minutes = 2;
-    $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
-    $modification_time_cache = @filemtime("tmp.json");
-    $modification_time_cache ? : 0;
-    $cache_difference = $modification_time_cache - $now;
+$expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
+$modification_time_cache = @filemtime("tmp.json");
+$modification_time_cache ?: 0;
+$cache_difference = $now - $modification_time_cache;
 
-    if($cache_difference > $expiry_cache_in_seconds) {
-        $cache_use = TRUE;
-    } else {
-        $cache_use = FALSE;
-    }
-print "CACHE:" .$cache_difference;
+if ($cache_difference < $expiry_cache_in_seconds) {
+    $cache_use = TRUE;
+} else {
+    $cache_use = FALSE;
+}
+//print "CACHE:" . $cache_difference;
 /**
  * Update - refresh intervals.
  */
 $update_expiry_in_minutes = 2;
-    $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
-    $then = `git log -1 --pretty=format:%ct`;
-    $update_difference_in_seconds = $then - $now;
-    $updating = FALSE;
+$expiry_update_in_seconds = $update_expiry_in_minutes * 60;
+$then = `git log -1 --pretty=format:%ct`;
+$update_difference_in_seconds = $now - $then;
+$updating = FALSE;
 
-    if ($update_difference_in_seconds > $expiry_update_in_seconds) {
-        $current_git_status = `git pull`;
-        if($current_git_status != "Already up-to-date.") {
-            $updating = TRUE;
-        } else {
-            $updating = FALSE;
-        }
+if ($update_difference_in_seconds < $expiry_update_in_seconds) {
+    $current_git_status = `git pull`;
+    if ($current_git_status != "Already up-to-date.") {
+        $updating = TRUE;
     }
-print "UPDATE:" . $update_difference_in_seconds;
+} else {
+    $updating = FALSE;
+}
+//print "UPDATE:" . $update_difference_in_seconds;
 
 if ($cache_use && $updating) {
-    print "Updating with a cached result.";
+    //print "Updating with a cached result.";
     print file_get_contents("tmp.json");
 } elseif ($updating) {
-    print "Updating with no cached result. Creating a result.";
+    //print "Updating with no cached result. Creating a result.";
     //Last option is to return live results.
     $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
     file_put_contents("tmp.json", $result);
     print $result;
 } elseif ($cache_use) {
-    print "Not updating, and has 'new enough' version cached.";
+    //print "Not updating, and has 'new enough' version cached.";
     print file_get_contents("tmp.json");
 } else {
-    print "Needs updating?";
+    print "Updating, please wait.";
 }
