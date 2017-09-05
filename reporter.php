@@ -4,18 +4,69 @@ namespace reporter;
 include_once "reporter/convenience.php";
 include_once "reporter/reporter.php";
 include_once "reporter/reporterRemote.php";
-$limit_in_minutes = 2;
-$limit_in_seconds = $limit_in_minutes * 60;
-$then = `git log -1 --pretty=format:%ct`;
 $now = time();
-$difference_in_seconds = abs($then - $now);
-$updating = FALSE;
-$execute_report = FALSE;
-if ($difference_in_seconds > $limit_in_seconds) {
-    print `git pull`;
-    $updating = TRUE;
-}
-if (file_exists("tmp.json") && $updating) {
+
+/**
+ * The IDEA here, is to balance three variables:
+ * FILE creation date.
+ *  0 = DOES NOT EXIST
+ *      Whether the code is being updated.
+ *          0 = Not updating, create NEW file AND SERVE
+ *          1 = Updating, not waiting RETURN/SERVE: "Domain in creation queue."
+ *
+ *      ---  DOES NOT EXIST == IS OLD ---
+ *
+ *  0 = IS OLD.
+ *      Whether the code is being updated.
+ *          0 = Not updating, create NEW file AND SERVE
+ *          1 = Updating, not waiting RETURN/SERVE: "Domain in creation queue."
+ *
+ *
+ *  1 = Serve as cache.
+ *      Whether the code is being updated.
+ *          0 = Not updating, SERVE CACHED
+ *          1 = Updating, SERVE CACHED
+
+ *
+ */
+
+
+
+/**
+ * Cache - refresh intervals.
+ */
+$cache_file_expiry_in_minutes = 2;
+    $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
+    $modification_time_cache = @filemtime("tmp.json");
+    $modification_time_cache ? : 0;
+    $cache_difference = abs($modification_time_cache - $now);
+
+    if($cache_difference > $expiry_cache_in_seconds) {
+        $cache_use = TRUE;
+    } else {
+        $cache_use = FALSE;
+    }
+
+/**
+ * Update - refresh intervals.
+ */
+$update_expiry_in_minutes = 2;
+    $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
+    $then = `git log -1 --pretty=format:%ct`;
+    $update_difference_in_seconds = abs($then - $now);
+    $updating = FALSE;
+
+    if ($update_difference_in_seconds > $expiry_update_in_seconds) {
+        $current_git_status = `git pull`;
+        if($current_git_status != "Already up-to-date.") {
+            $updating = TRUE;
+        } else {
+            $updating = FALSE;
+        }
+    }
+
+
+if ($cache_use && $updating) {
     print "Updating with a cached result.";
     print file_get_contents("tmp.json");
 } elseif ($updating) {
@@ -24,7 +75,7 @@ if (file_exists("tmp.json") && $updating) {
     $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
     file_put_contents("tmp.json", $result);
     print $result;
-} elseif (file_exists("tmp.json")) {
+} elseif ($cache_use) {
     print "Not updating, and has 'new enough' version cached.";
     print file_get_contents("tmp.json");
 }
