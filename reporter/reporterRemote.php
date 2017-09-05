@@ -21,7 +21,6 @@ class _reporterRemote extends reporter
     public function __construct($domain, $drush_root_hint = NULL)
     {
         parent::__construct($domain);
-        // @TODO Replace shell calls.
         $this->user = get_current_user();
         $this->web_root = $_SERVER['DOCUMENT_ROOT'];
         $this->drush_root = sprintf($this->drush_root, $this->user);

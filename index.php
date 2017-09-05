@@ -30,12 +30,14 @@ spl_autoload_register();
   $domains["https://www.ferreirapartners.co.za"] = 0;
   $domains["http://sph"] = 0;
 
+  $requests = ["loadaverage", "disk", "drush", "psi", "analytics"];
+
   foreach ($domains as $domain => $active) {
     if ($active) {
       $start_time = time() + microtime();
       $report = new _reporterFrontend($domain);
       $report
-        ->query(["loadaverage", "disk", "drush", "psi", "analytics"])
+        ->query($requests)
         ->process($start_time);
       unset($report);
     }
