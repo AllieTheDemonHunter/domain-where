@@ -43,7 +43,7 @@ if ($cache_difference < $expiry_cache_in_seconds) {
 } else {
     $cache_use = FALSE;
 }
-//print "CACHE:" . $cache_difference;
+$debug[] =  "CACHE:" . $cache_difference;
 /**
  * Update - refresh intervals.
  */
@@ -61,20 +61,20 @@ if ($update_difference_in_seconds < $expiry_update_in_seconds) {
 } else {
     $updating = FALSE;
 }
-//print "UPDATE:" . $update_difference_in_seconds;
+$debug[] =  "UPDATE:" . $update_difference_in_seconds;
 
 if ($cache_use && $updating) {
-    //print "Updating with a cached result.";
+    $debug[] =  "Updating with a cached result.";
     print file_get_contents("tmp.json");
 } elseif ($updating) {
-    //print "Updating with no cached result. Creating a result.";
+    $debug[] =  "Updating with no cached result. Creating a result.";
     //Last option is to return live results.
     $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
     file_put_contents("tmp.json", $result);
     print $result;
 } elseif ($cache_use) {
-    //print "Not updating, and has 'new enough' version cached.";
+    $debug[] =  "Not updating, and has 'new enough' version cached.";
     print file_get_contents("tmp.json");
 } else {
-    print "Updating, please wait.";
+    print "Updating, please wait.<pre>{print_r($debug,1)}</pre>";
 }
