@@ -178,6 +178,11 @@ class _reporterFrontend extends reporter
      */
     private function _process_reporter($type_of_report, $reporter)
     {
+        if(is_string($reporter)) {
+            print $reporter;
+            return TRUE;
+        }
+
         //Error flag default set to error.
         $value_or_error = "e";
 
@@ -190,6 +195,7 @@ class _reporterFrontend extends reporter
 
                 case "drush":
                     //Drush
+
                     foreach ($reporter->response->$type_of_report as $drush_command => $value_or_error) {
                         if($result = $value_or_error->v) {
                             $this->make_list($result, 1);
