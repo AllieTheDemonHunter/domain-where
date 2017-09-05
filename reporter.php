@@ -11,7 +11,7 @@ $now = time();
 $difference_in_seconds = abs($then - $now);
 $updating = FALSE;
 $execute_report = FALSE;
-if ($difference_in_seconds < $limit_in_seconds) {
+if ($difference_in_seconds > $limit_in_seconds) {
     print `git pull`;
     $updating = TRUE;
 }
