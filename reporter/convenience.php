@@ -24,13 +24,13 @@ trait convenience
      */
     public static function make_list($data)
     {
-      if(is_object($data)) {
-          foreach($data as $key => $value) {
-              $array_data[] = [$key, $value];
-          }
-      } else {
-          $array_data = $data;
-      }
+        if (is_object($data)) {
+            foreach ($data as $key => $value) {
+                $array_data[] = [$key, $value];
+            }
+        } else {
+            $array_data = $data;
+        }
 
         print "<dl>";
         foreach ($array_data as $result) {

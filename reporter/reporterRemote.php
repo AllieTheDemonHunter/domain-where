@@ -123,9 +123,8 @@ class _reporterRemote extends reporter
                     $response[$command]['e'] = "Drush: No data returned.";
                 }
             }
-            $responses[] = $response;
         }
 
-        return $responses;
+        return $response;
   }
 }
