@@ -7,7 +7,7 @@ include_once "reporter/reporterRemote.php";
 $now = time();
 
 /**
- * The IDEA here, is to balance three variables:
+ * The IDEA here, is to prioritize one of three outcomes in context of this remote file:
  * FILE creation date.
  *  0 = DOES NOT EXIST
  *      Whether the code is being updated.
@@ -37,7 +37,7 @@ $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
 $modification_time_cache = @filemtime("tmp.json");
 $cache_difference = $now - $modification_time_cache;
 
-if ($cache_difference < $expiry_cache_in_seconds) {
+if ($cache_difference > $expiry_cache_in_seconds) {
     $cache_use = TRUE;
 } else {
     $cache_use = FALSE;
