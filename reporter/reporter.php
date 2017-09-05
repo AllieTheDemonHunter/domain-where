@@ -113,8 +113,9 @@ class reporter
 
         if ($returned_from_server != "") {
             $json_from_server = json_decode($returned_from_server);
-
-            return $json_from_server;
+            if($json_from_server) {
+                return $json_from_server;
+            }
         }
 
         if (is_string($returned_from_server)) {

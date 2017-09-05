@@ -51,7 +51,7 @@ class _reporterFrontend extends reporter
 
                 default: {
                 $url_variables['t'] = $this_type;
-                $this->response[$this_type] = $this->_query($this_type, $fixes);
+                $this->response[$this_type] = $this->_query($this_type);
                 }
             }
         }
@@ -65,11 +65,10 @@ class _reporterFrontend extends reporter
     /**
      * Called by $this->query()
      * @param $this_type
-     * @param $fixes
      *
      * @return bool|string
      */
-    private function _query($this_type, $fixes)
+    private function _query($this_type)
     {
         curl_setopt($this->curl, CURLOPT_URL, $this->domain . "/domain-where/reporter.php?t=" . $this_type);
         $json_from_server = $this->curl_fetch();
@@ -124,7 +123,7 @@ class _reporterFrontend extends reporter
 
                 case "analytics":
                     //Just a string
-                    print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>$reporter</div>";
+                    print "<div class='report $type_of_report'><h3>$type_of_report: </h3>$reporter</div>";
                     break;
 
                 default:
@@ -159,7 +158,6 @@ class _reporterFrontend extends reporter
             } elseif ($report->error->errors[0]) {
                 $this->make_list($report->error->errors[0]);
             }
-
 
             if (isset($report->screenshot)) {
                 $google_data = $report->screenshot->data;

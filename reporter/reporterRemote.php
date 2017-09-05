@@ -116,13 +116,14 @@ class _reporterRemote extends reporter
 
                         $the_key = trim($this_row_array[0]);
                         if (in_array($the_key, $keys)) {
-                            $responses[] = $response[$command]['v'][] = $this_row_array;
+                            $response[$command]['v'][] = $this_row_array;
                         }
                     }
                 } else {
-                    $responses[] = $response[$command]['e'] = "Drush: No data returned.";
+                    $response[$command]['e'] = "Drush: No data returned.";
                 }
             }
+            $responses[] = $response;
         }
 
         return $responses;
