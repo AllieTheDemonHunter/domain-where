@@ -84,7 +84,7 @@ class _reporterRemote extends reporter
                 ];
                 $commands["vget leadtrekker_api_key"] = ["leadtrekker_api_key"];
                 $commands["pmi leadtrekker"] = ["Status"];
-                $this->response[$report_type][] = $this->drush_request($commands);
+                $this->response[$report_type] = $this->drush_request($commands);
                 break;
             }
 
@@ -99,7 +99,7 @@ class _reporterRemote extends reporter
 
     public function drush_request(array $commands)
     {
-        $response = [];
+        $response = array();
         foreach ($commands as $command => $keys) {
             $drushData = `php $this->drush_root --root=$this->web_root $command`;
             if (is_null($drushData)) {
