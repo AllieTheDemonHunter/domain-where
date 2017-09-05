@@ -74,7 +74,7 @@ class _reporterRemote extends reporter
                 if (is_null($disk_free_space_percentage)) {
                     $this->response[$report_type]["e"] = "<code>disk_free_space()</code> is denied on server.";
                 } elseif ($disk_free_space_percentage > 0) {
-                    $this->response[$report_type]["v"] = $disk_free_space_percentage;
+                    $this->response[$report_type]["v"] = round($disk_free_space_percentage, 2);
                 }
                 break;
             }
