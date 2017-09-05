@@ -180,7 +180,7 @@ class _reporterFrontend extends reporter
     {
         if(is_string($reporter)) {
             print $reporter;
-            return TRUE;
+            return;
         }
 
         //Error flag default set to error.
