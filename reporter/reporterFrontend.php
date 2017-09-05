@@ -193,12 +193,12 @@ class _reporterFrontend extends reporter
 
             foreach($facets as $some_metric) {
                 //Error flag update, set to 'value'.
-                if (isset($some_metric->response->$type_of_report->v)) {
+                if (isset($some_metric->v)) {
                     $value_or_error = "v";
                 }
 
                 print "<div class='value $value_or_error'>";
-                $the_value = $some_metric->response->$type_of_report->$value_or_error;
+                $the_value = $some_metric->$value_or_error;
 
                 if (is_array($the_value)) {
                     //Drush
