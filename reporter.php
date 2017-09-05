@@ -9,8 +9,9 @@ $limit_in_seconds = $limit_in_minutes * 60;
 $then = `git log -1 --pretty=format:%ct`;
 $now = time();
 $difference_in_seconds = abs($then - $now);
-if($difference_in_seconds < $limit_in_seconds) {
+if($difference_in_seconds < $limit_in_seconds && file_exists("tmp.json")) {
     print `git pull`;
-    die("updating");
+    die(file_get_contents("tmp.json"));
 }
-print json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
+$result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
+file_put_contents("tmp.json", $result);
