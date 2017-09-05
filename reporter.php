@@ -46,7 +46,7 @@ $cache_file_expiry_in_minutes = 2;
     } else {
         $cache_use = FALSE;
     }
-
+print "CACHE:" .$cache_difference;
 /**
  * Update - refresh intervals.
  */
@@ -64,7 +64,7 @@ $update_expiry_in_minutes = 2;
             $updating = FALSE;
         }
     }
-
+print "UPDATE:" . $update_difference_in_seconds;
 
 if ($cache_use && $updating) {
     print "Updating with a cached result.";
