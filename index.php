@@ -24,7 +24,7 @@ spl_autoload_register();
 <div id="wrapper">
   <?php
 
-  $domains["http://10.10.50.25"] = 1;
+  $domains["http://z-starbright.co.za.dedi25.cpt4.host-h.net"] = 1;
 
   foreach ($domains as $domain => $active) {
     if ($active) {

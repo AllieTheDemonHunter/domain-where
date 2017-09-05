@@ -14,9 +14,9 @@ class _reporterRemote extends reporter
 
     public $user;
 
-    public $web_root = "/usr/home/%s/public_html";
+    public $web_root;
 
-    public $drush_root;
+    public $drush_root = "/usr/home/%s/public_html";
 
     public function __construct($domain, $drush_root_hint = NULL)
     {
@@ -24,7 +24,7 @@ class _reporterRemote extends reporter
         // @TODO Replace shell calls.
         $this->user = get_current_user();
         $this->web_root = $_SERVER['DOCUMENT_ROOT'];
-        $this->drush_root = `which drush`;
+        $this->drush_root = sprintf($this->drush_root, $this->user);
         $this->report();
     }
 
