@@ -91,7 +91,7 @@ class _reporterFrontend extends reporter
     {
         print "<div class='reports'>";
         print "<h2>$this->domain</h2>";
-        $this->_process_report($this->response);
+        $this->_process_reports($this->response);
         $end_time = time() + microtime();
         $time_taken = ($end_time - $start_time);
         print "<div class='time-taken'>Time taken: <b>{$time_taken}</b>s</div>";
@@ -104,18 +104,19 @@ class _reporterFrontend extends reporter
      *
      * @param $reports
      */
-    private function _process_report($reports)
+    private function _process_reports($reports)
     {
         foreach ($reports as $type_of_report => $reporter) {
-            print "<div class='report $type_of_report'>";
             if (!$reporter) {
-                print "problems with report: " . $type_of_report;
+                //print "problems with report: " . $type_of_report;
                 continue;
             }
+
+
             switch ($type_of_report) {
                 case "psi":
+                    print "<div class='report $type_of_report'>";
                     //type should be object
-                    print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
                     $this->_process_psi($reporter);
                     print "</div>";
                     break;
@@ -126,10 +127,11 @@ class _reporterFrontend extends reporter
                     break;
 
                 default:
+                    print "<div class='report $type_of_report'>";
                     //Assumed to be a reporter object.
                     $this->_process_reporter($type_of_report, $reporter);
+                    print "</div>";
             }
-            print "</div>";
         }
     }
 
@@ -139,24 +141,32 @@ class _reporterFrontend extends reporter
      */
     private function _process_psi($report)
     {
-        if (is_object($report) && isset($report->ruleGroups)) {
-            print "<dl>";
-            foreach ($report->ruleGroups as $rule_heading => $value_object) {
-                $score = trim($value_object->score);
-                if ($score < 50) {
-                    $class = "e";
-                } else {
-                    $class = "v";
+        if (is_object($report)) {
+            print "<div class='reporter psi'><h3>psi: </h3>";
+            if(isset($report->ruleGroups)) {
+                print "<dl>";
+                foreach ($report->ruleGroups as $rule_heading => $value_object) {
+                    $score = trim($value_object->score);
+                    if ($score < 50) {
+                        $class = "e";
+                    } else {
+                        $class = "v";
+                    }
+                    print "<dt class='$class'>" . trim($rule_heading) . "</dt><dd class='$class'>" . $score . "%</dd>";
                 }
-                print "<dt class='$class'>" . trim($rule_heading) . "</dt><dd class='$class'>" . $score . "%</dd>";
+                print "<dl>";
+            } elseif ($report->error->errors[0]) {
+                $this->make_list($report->error->errors[0]);
             }
-            print "<dl>";
-        }
 
-        if (isset($report->screenshot)) {
-            $google_data = $report->screenshot->data;
-            $base64_data = str_replace("-", "+", str_replace("_", "/", $google_data)); // This is a Google thing.
-            print '<div><img src="data:' . $report->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
+
+            if (isset($report->screenshot)) {
+                $google_data = $report->screenshot->data;
+                $base64_data = str_replace("-", "+", str_replace("_", "/", $google_data)); // This is a Google thing.
+                print '<div><img src="data:' . $report->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
+            }
+
+            print "</div>";
         }
     }
 
@@ -193,6 +203,7 @@ class _reporterFrontend extends reporter
                     if (is_numeric($the_value)) {
                         print "%";
                     }
+                    print "</div>";
                     break;
 
                 case "array":
@@ -202,11 +213,12 @@ class _reporterFrontend extends reporter
                     break;
             }
 
+            print "</div>";
+
         } catch (\Exception $exception) {
             throw new \Exception($object_error_message, E_ERROR);
         }
 
-        print "</div></div>";
         return TRUE;
     }
 }
