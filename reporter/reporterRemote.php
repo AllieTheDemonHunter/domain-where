@@ -84,7 +84,7 @@ class _reporterRemote extends reporter
                 ];
                 $commands["vget leadtrekker_api_key"] = ["leadtrekker_api_key"];
                 $commands["pmi leadtrekker"] = ["Status"];
-                $this->response[$report_type] = $this->drush_request($commands);
+                $this->response[$report_type][] = $this->drush_request($commands);
                 break;
             }
 

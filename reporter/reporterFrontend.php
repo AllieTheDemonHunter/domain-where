@@ -170,27 +170,31 @@ class _reporterFrontend extends reporter {
       $object_error_message = sprintf("<b>%s</b><br> Reporter object error. Check remote reporter.php file.", $type_of_report);
 
       print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
-      print "<div class='update-status'><em>" . nl2br(trim($reporter->update)) . "</em> @ " . $reporter->remote->version . "</div>";
+      print "<div class='update-status'>" . $reporter->version . "</div>";
 
-      //Error flag update, set to 'value'.
-      if (isset($reporter->response->$type_of_report->v)) {
-        $value_or_error = "v";
-      }
 
-      print "<div class='value $value_or_error'>";
-      $the_value = $reporter->response->$type_of_report->$value_or_error;
+          $the_type = gettype($reporter->response->$type_of_report);
 
-      if (is_array($the_value)) {
-        //Drush
-        $this->make_list($the_value);
-      }
-      else {
-        //Server metrics
-        print $the_value;
-        if (is_numeric($the_value)) {
-          print "%";
+
+        /*//Error flag update, set to 'value'.
+        if (isset($reporter->response->$type_of_report->v)) {
+            $value_or_error = "v";
         }
-      }
+
+        print "<div class='value $value_or_error'>";
+        $the_value = $reporter->response->$type_of_report->$value_or_error;
+
+        if (is_array($the_value)) {
+            //Drush
+            $this->make_list($the_value);
+        }
+        else {
+            //Server metrics
+            print $the_value;
+            if (is_numeric($the_value)) {
+                print "%";
+            }
+        }*/
     } catch (\Exception $exception) {
       throw new \Exception($object_error_message, E_ERROR);
     }
