@@ -76,5 +76,6 @@ if ($cache_use && $updating) {
     $debug[] =  "Not updating, and has 'new enough' version cached.";
     print file_get_contents("tmp.json");
 } else {
-    print "Updating, please wait.<pre>{print_r($debug,1)}</pre>";
+    $reasons = print_r($debug,1);
+    print "Updating, please wait.<pre>{$reasons}</pre>";
 }
