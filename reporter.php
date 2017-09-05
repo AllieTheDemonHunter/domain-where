@@ -39,7 +39,7 @@ $cache_file_expiry_in_minutes = 2;
     $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
     $modification_time_cache = @filemtime("tmp.json");
     $modification_time_cache ? : 0;
-    $cache_difference = abs($modification_time_cache - $now);
+    $cache_difference = $modification_time_cache - $now;
 
     if($cache_difference > $expiry_cache_in_seconds) {
         $cache_use = TRUE;
@@ -53,7 +53,7 @@ $cache_file_expiry_in_minutes = 2;
 $update_expiry_in_minutes = 2;
     $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
     $then = `git log -1 --pretty=format:%ct`;
-    $update_difference_in_seconds = abs($then - $now);
+    $update_difference_in_seconds = $then - $now;
     $updating = FALSE;
 
     if ($update_difference_in_seconds > $expiry_update_in_seconds) {
