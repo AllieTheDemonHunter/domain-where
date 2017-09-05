@@ -32,7 +32,7 @@ $now = time();
 /**
  * Cache - refresh intervals.
  */
-$cache_file_expiry_in_minutes = 2;
+$cache_file_expiry_in_minutes = 1;
 $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
 $modification_time_cache = @filemtime("tmp.json");
 $cache_difference = $now - $modification_time_cache;
@@ -47,7 +47,7 @@ $debug[] =  "CACHE:" . $cache_difference . "LIMIT: ". $expiry_cache_in_seconds;
 /**
  * Update - refresh intervals.
  */
-$update_expiry_in_minutes = 2;
+$update_expiry_in_minutes = 1;
 $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
 $then = `git log -1 --pretty=format:%ct`;
 $update_difference_in_seconds = $now - $then;
