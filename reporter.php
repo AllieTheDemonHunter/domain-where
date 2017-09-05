@@ -34,9 +34,8 @@ $now = time();
  */
 $cache_file_expiry_in_minutes = 2;
 $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
-$modification_time_cache = @filemtime("tmp.json");
-$modification_time_cache ?: 0;
-$cache_difference = $modification_time_cache - $now;
+$modification_time_cache = filemtime("tmp.json");
+$cache_difference = $now - $modification_time_cache;
 
 if ($cache_difference < $expiry_cache_in_seconds) {
     $cache_use = TRUE;
