@@ -185,10 +185,25 @@ class _reporterFrontend extends reporter
             $object_error_message = sprintf("<b>%s</b><br> Reporter object error. Check remote reporter.php file.", $type_of_report);
 
             print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
-            $the_type = gettype($reporter->response->$type_of_report);
 
-            switch ($the_type) {
-                case "object":
+            switch ($type_of_report) {
+
+                case "drush":
+                    //Drush
+                    foreach ($reporter->response->$type_of_report as $drush_command => $value_or_error) {
+                        if($result = $value_or_error['v']) {
+
+                        } elseif ($result = $value_or_error['e']) {
+
+                        } else {
+                            //problems
+                        }
+                    }
+
+                    $this->make_list($reporter->response->$type_of_report);
+
+                    break;
+                default :
                     //Error flag update, set to 'value'.
                     if (isset($reporter->response->$type_of_report->v)) {
                         $value_or_error = "v";
@@ -202,12 +217,6 @@ class _reporterFrontend extends reporter
                         print "%";
                     }
                     print "</div>";
-                    break;
-
-                case "array":
-                    //Drush
-                    $this->make_list($reporter->response->$type_of_report);
-
                     break;
             }
 
