@@ -103,6 +103,8 @@ class _reporterRemote extends reporter
         $responses = array();
         foreach ($commands as $command => $keys) {
             $drushData = `php $this->drush_root --root=$this->web_root $command`;
+            //Make the command string safe to use as a key in returned JSON.
+            $command = $this::make_machine_name($command);
             if (is_null($drushData)) {
                 //This doesn't get used / returned.
                 $response[$command]['e'] = "Nothing here.";

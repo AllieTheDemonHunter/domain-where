@@ -71,4 +71,10 @@ trait convenience
         $body = file_get_contents('php://input');
         return json_decode($body, TRUE);
     }
+
+    public static function make_machine_name($human_readable) {
+        $machine_readable = strtolower($human_readable);
+        $machine_readable = preg_replace('@[^a-z0-9_]+@','_',$machine_readable);
+        return $machine_readable;
+    }
 }
