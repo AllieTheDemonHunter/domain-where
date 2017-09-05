@@ -100,10 +100,11 @@ class _reporterRemote extends reporter
     public function drush_request(array $commands)
     {
         $response = array();
+        $responses = array();
         foreach ($commands as $command => $keys) {
             $drushData = `php $this->drush_root --root=$this->web_root $command`;
             if (is_null($drushData)) {
-                $response[$command]['e'] = "Nothing here.";
+                $responses[] = $response[$command]['e'] = "Nothing here.";
             } else {
                 $drushDataArray = explode(PHP_EOL, $drushData);
 
@@ -114,15 +115,15 @@ class _reporterRemote extends reporter
 
                         $the_key = trim($this_row_array[0]);
                         if (in_array($the_key, $keys)) {
-                            $response[$command]['v'][] = $this_row_array;
+                            $responses[] = $response[$command]['v'][] = $this_row_array;
                         }
                     }
                 } else {
-                    $response[$command]['e'] = "Drush: No data returned.";
+                    $responses[] = $response[$command]['e'] = "Drush: No data returned.";
                 }
             }
         }
 
-        return $response;
+        return $responses;
   }
 }
