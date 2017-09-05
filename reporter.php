@@ -42,7 +42,7 @@ if ($cache_difference < $expiry_cache_in_seconds) {
 } else {
     $cache_use = FALSE;
 }
-$debug[] =  "CACHE:" . $cache_difference . "LIMIT: ". $expiry_cache_in_seconds;
+$debug[] =  "CACHE({$cache_use}):" . $cache_difference . "LIMIT: ". $expiry_cache_in_seconds;
 
 /**
  * Update - refresh intervals.
