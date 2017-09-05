@@ -191,16 +191,16 @@ class _reporterFrontend extends reporter
                 case "drush":
                     //Drush
                     foreach ($reporter->response->$type_of_report as $drush_command => $value_or_error) {
-                        if($result = $value_or_error['v']) {
-
-                        } elseif ($result = $value_or_error['e']) {
-
+                        if($result = $value_or_error->v) {
+                            $this->make_list($result, 1);
+                        } elseif ($result = $value_or_error->e) {
+                            $this->make_list([[$drush_command, $value_or_error->e]], 0);
                         } else {
                             //problems
                         }
                     }
 
-                    $this->make_list($reporter->response->$type_of_report);
+
 
                     break;
                 default :

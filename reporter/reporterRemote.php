@@ -59,6 +59,9 @@ class _reporterRemote extends reporter
                     $this->response[$report_type]["e"]
                         = "<code>sys_getloadavg()</code> is denied on server.";
                 } else {
+                    array_walk($topData, function(&$average_interval){
+                        $average_interval = round($average_interval, 2);
+                    });
                     $this->response[$report_type]["v"] = implode(" | ", $topData);
                 }
                 break;

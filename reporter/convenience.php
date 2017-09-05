@@ -51,7 +51,6 @@ trait convenience
      */
     public function curl_init($domain, $uri = "/domain-where/reporter.php")
     {
-
         if (!is_resource($this->curl)) {
             $curl = curl_init($domain . $uri);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
