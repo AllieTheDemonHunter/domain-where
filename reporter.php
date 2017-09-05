@@ -78,4 +78,6 @@ if ($cache_use && $updating) {
 } elseif ($cache_use) {
     print "Not updating, and has 'new enough' version cached.";
     print file_get_contents("tmp.json");
+} else {
+    print "Needs updating?";
 }
