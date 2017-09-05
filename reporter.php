@@ -37,12 +37,12 @@ $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
 $modification_time_cache = filemtime("tmp.json");
 $cache_difference = $now - $modification_time_cache;
 
-if ($cache_difference < $expiry_cache_in_seconds) {
+if ($cache_difference > $expiry_cache_in_seconds) {
     $cache_use = TRUE;
 } else {
     $cache_use = FALSE;
 }
-$debug[] =  "CACHE:" . $cache_difference;
+$debug[] =  "CACHE:" . $cache_difference . "LIMIT: ". $expiry_cache_in_seconds;
 
 /**
  * Update - refresh intervals.
