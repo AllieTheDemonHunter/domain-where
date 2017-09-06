@@ -140,6 +140,7 @@ class _reporterFrontend extends reporter
     private function _process_psi($report)
     {
         if (is_object($report)) {
+            $status = "green";
             $out = "<div class='reporter psi'><h3>psi: </h3>";
             if(isset($report->ruleGroups)) {
                 $out .= "<dl>";
@@ -147,6 +148,7 @@ class _reporterFrontend extends reporter
                     $score = trim($value_object->score);
                     if ($score < 50) {
                         $class = "e";
+                        $status = "red";
                     } else {
                         $class = "v";
                     }
@@ -165,7 +167,7 @@ class _reporterFrontend extends reporter
 
             $out .= "</div>";
 
-            print "<div class='report psi'>$out</div>";
+            print "<div class='report psi $status'>$out</div>";
         }
     }
 
