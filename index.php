@@ -34,7 +34,7 @@ spl_autoload_register();
 
   //$requests = ["loadaverage", "disk", "drush", "psi", "analytics"];
 
-  $requests = ["loadaverage"];
+  $requests = ["disk"];
 
   foreach ($domains as $domain => $active) {
     if ($active) {
