@@ -51,7 +51,7 @@ $debug["use_cache"] = $cache_use;
 $debug["cache_difference"] = $cache_difference;
 $debug["cache_file_expiry_in_minutes"] = $cache_file_expiry_in_minutes;
 
-if ($cache_use && 0) {
+if ($cache_use) {
     $cache_expire_http_header = 'Expires: '. date('D, d M Y H:i:s e', strtotime("+".$cache_difference." seconds"));
     //Debug
     $debug["message"] = "Serving a cached version.";
