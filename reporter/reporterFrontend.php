@@ -115,10 +115,8 @@ class _reporterFrontend extends reporter
 
             switch ($type_of_report) {
                 case "psi":
-                    print "<div class='report $type_of_report'>";
                     //type should be object
                     $this->_process_psi($reporter);
-                    print "</div>";
                     break;
 
                 case "analytics":
@@ -142,9 +140,9 @@ class _reporterFrontend extends reporter
     private function _process_psi($report)
     {
         if (is_object($report)) {
-            print "<div class='reporter psi'><h3>psi: </h3>";
+            $out = "<div class='reporter psi'><h3>psi: </h3>";
             if(isset($report->ruleGroups)) {
-                print "<dl>";
+                $out .= "<dl>";
                 foreach ($report->ruleGroups as $rule_heading => $value_object) {
                     $score = trim($value_object->score);
                     if ($score < 50) {
@@ -152,9 +150,9 @@ class _reporterFrontend extends reporter
                     } else {
                         $class = "v";
                     }
-                    print "<dt class='$class'>" . trim($rule_heading) . "</dt><dd class='$class'>" . $score . "%</dd>";
+                    $out .= "<dt class='$class'>" . trim($rule_heading) . "</dt><dd class='$class'>" . $score . "%</dd>";
                 }
-                print "<dl>";
+                $out .= "<dl>";
             } elseif ($report->error->errors[0]) {
                 $this->make_list($report->error->errors[0]);
             }
@@ -162,10 +160,12 @@ class _reporterFrontend extends reporter
             if (isset($report->screenshot)) {
                 $google_data = $report->screenshot->data;
                 $base64_data = str_replace("-", "+", str_replace("_", "/", $google_data)); // This is a Google thing.
-                print '<div><img src="data:' . $report->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
+                $out .= '<div><img src="data:' . $report->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
             }
 
-            print "</div>";
+            $out .= "</div>";
+
+            print "<div class='report psi'>$out</div>";
         }
     }
 
