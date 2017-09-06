@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
   color: white;
   background-color: rgba(0, 0, 0, .8);
-  font-size: 14px;
+  font-size: 12px;
 }
 h2 {
   font-size: 0.8em;
@@ -35,8 +35,36 @@ h3 {
 .report {
   padding: 0.6em 0.8em 1.5em;
   background-color: rgba(255, 255, 255, 0.22);
-  border-radius: 3px;
+  border-radius: 3px 6px 3px 3px;
   margin-bottom: 1px;
+  position: relative;
+
+  &:after {
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    content: "?";
+    top: 0;
+    right: 0;
+    border: 1px solid;
+    border-radius: 50%;
+    text-align: center;
+    color: silver;
+  }
+
+  &.unknown-status:after {
+    color: white;
+  }
+
+  &.green:after {
+    color: green;
+    content: "\2713";
+  }
+
+  &.red:after {
+    color: red;
+    content: "!!";
+  }
 }
 .time-taken {
   text-align: center;

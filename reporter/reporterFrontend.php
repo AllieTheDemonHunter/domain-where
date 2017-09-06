@@ -31,7 +31,6 @@ class _reporterFrontend extends reporter
      *
      * @return $this
      */
-    //@TODO This function has mixed functionality that has to get encapsulated.
     public function query(array $type)
     {
         $url_variables = [];
@@ -132,6 +131,9 @@ class _reporterFrontend extends reporter
         }
     }
 
+    /**
+     * @param $reporter
+     */
     private function _process_analytics($reporter)
     {
         //Just a string
@@ -140,9 +142,15 @@ class _reporterFrontend extends reporter
         } else {
             $analytics_status = "green";
         }
-        print "<div class='report analytics $analytics_status'><h3>analytics: </h3>$reporter</div>";
+
+        print "<div class='report analytics $analytics_status'><h3>analytics: </h3>";
+        print "<div class='reporter'>$reporter</div>";
+        print "</div>";
     }
 
+    /**
+     * @param $reporter
+     */
     private function _process_loadaverage($reporter)
     {
         //Error flag update, set to 'value'.
@@ -204,24 +212,32 @@ class _reporterFrontend extends reporter
         }
     }
 
+    /**
+     * @param $reporter
+     */
     private function _process_drush($reporter)
     {
+        $out = "";
         foreach ($reporter->response->drush as $drush_command => $value_or_error) {
+            $out .= "<code>$drush_command</code>";
             if ($result = $value_or_error->v) {
-                $out = $this->make_list($result, 1);
+                $out .= $this->make_list($result, 1);
             } elseif ($result = $value_or_error->e) {
                 $out .= $this->make_list([[$drush_command, $value_or_error->e]], 0);
             } else {
                 $out .= "Problems";
             }
         }
-        $out .= "</div>";
 
         print "<div class='report drush unknown-status'><h3>drush: </h3>";
         print "<div class='reporter'>$out</div>";
         print "</div>";
     }
 
+    /**
+     * @param $reporter
+     * @param $type_of_report
+     */
     private function _process_default($reporter, $type_of_report)
     {
         //Error flag update, set to 'value'.

@@ -59,10 +59,10 @@ gulp.task('compress', function() {
 gulp.task('watch', function() {
 
   // watch scss for changes and clear drupal theme cache on change
-  gulp.watch(['./scss/**/*.scss']);
+  gulp.watch(['./scss/**/*.scss'], ['sass']);
 
   // watch js for changes and clear drupal theme cache on change
-  gulp.watch(['./js-src/**/*.js']);
+  gulp.watch(['./js-src/**/*.js'], ['compress']);
 });
 
 gulp.task('default', ['watch']);
