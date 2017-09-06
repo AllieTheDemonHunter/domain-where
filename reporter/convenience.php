@@ -23,6 +23,7 @@ trait convenience
 
     /**
      * @param array $data
+     * @return string $out
      */
     public static function make_list($data)
     {
