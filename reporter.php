@@ -38,9 +38,9 @@ $modification_time_cache = @filemtime("tmp.json");
 $cache_difference = $now - $modification_time_cache;
 
 if ($cache_difference < $expiry_cache_in_seconds) {
-    $cache_use = TRUE;
+    $cache_use = 1;
 } else {
-    $cache_use = FALSE;
+    $cache_use = 0;
 }
 $debug[] =  "CACHE({$cache_use}):" . $cache_difference . " < ". $expiry_cache_in_seconds;
 
@@ -51,17 +51,16 @@ $update_expiry_in_minutes = 1;
 $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
 $then = `git log -1 --pretty=format:%ct`;
 $update_difference_in_seconds = $now - $then;
-$updating = FALSE;
 
-if ($update_difference_in_seconds < $expiry_update_in_seconds) {
+if ($update_difference_in_seconds > $expiry_update_in_seconds) {
     $current_git_status = `git pull`;
-    if ($current_git_status != "Already up-to-date.") {
-        $updating = TRUE;
+    if (trim($current_git_status) != "Already up-to-date.") {
+        $updating = 1;
     } else {
-        $updating = FALSE;
+        $updating = 0;
     }
 } else {
-    $updating = FALSE;
+    $updating = 0;
 }
 $debug[] =  "UPDATE({$updating}):" . $update_difference_in_seconds;
 
@@ -71,6 +70,7 @@ if ($cache_use && $updating) {
 } elseif ($updating) {
     $debug[] =  "Updating with no cached result. Creating a result.";
     //Last option is to return live results.
+    make_result:
     $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
     file_put_contents("tmp.json", $result);
     print $result;
@@ -78,9 +78,8 @@ if ($cache_use && $updating) {
     $debug[] =  "Not updating, and has 'new enough' version cached.";
     print file_get_contents("tmp.json");
 } else {
-
-    print "Updating, please wait.";
+    goto make_result;
 }
 
-$reasons = print_r($debug,1);
-print "<pre>{$reasons}</pre>";
+//$reasons = print_r($debug,1);
+//print "<pre>{$reasons}</pre>";
