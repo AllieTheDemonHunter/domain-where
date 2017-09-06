@@ -32,7 +32,7 @@ $request_tmp_name = "tmp_" . $_GET['t'] . ".json";
 /**
  * Cache - refresh intervals.
  */
-$cache_file_expiry_in_minutes = 10;
+$cache_file_expiry_in_minutes = 15;
 $expiry_cache_in_seconds = $cache_file_expiry_in_minutes * 60;
 $modification_time_cache = @filemtime($request_tmp_name);
 $cache_difference = $now - $modification_time_cache;
