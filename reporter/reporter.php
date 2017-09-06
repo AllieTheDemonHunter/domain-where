@@ -24,7 +24,7 @@ class reporter
 
     public $domain = "";
 
-    public $version = "v0.91";
+    public $version = "v0.92";
 
     protected $curl = NULL;
 

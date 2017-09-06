@@ -54,7 +54,7 @@ $debug["cache_file_expiry_in_minutes"] = $cache_file_expiry_in_minutes;
 if ($cache_use && 0) {
     $cache_expire_http_header = 'Expires: '. date('D, d M Y H:i:s e', strtotime("+".$cache_difference." seconds"));
     //Debug
-    $debug["messages"][] = "Not updating, and has 'new enough' version cached.";
+    $debug["message"] = "Serving a cached version.";
     $debug["cache_expire_http_header"] = $cache_expire_http_header;
     
     header($cache_expire_http_header);
@@ -67,7 +67,7 @@ if ($cache_use && 0) {
      */
     $expire_http_header = 'Expires: '. date('D, d M Y H:i:s e', strtotime("+".$expiry_cache_in_seconds." seconds"));
     //Debug
-    $debug["messages"][] = "Updating with no cached result. Creating a result.";
+    $debug["message"] = "No cache file or has expired. Creating a result.";
     $debug["_expire_http_header"] = $expire_http_header;
 
     //Execute
