@@ -137,3 +137,5 @@ fabric.properties
 .DS_Store
 css/.DS_Store
 js/.DS_Store
+!/src/nice_r/
+Would skip repository src/nice_r
