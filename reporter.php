@@ -51,7 +51,7 @@ $debug[] = "CACHE({$cache_use}):" . $cache_difference . " < " . $expiry_cache_in
 
 if ($cache_use) {
     $debug[] = "Not updating, and has 'new enough' version cached.";
-    print file_get_contents($request_tmp_name);
+    print json_decode(file_get_contents($request_tmp_name));
 } else {
     /**
      * NO CACHED FILE AVAILABLE
