@@ -143,10 +143,12 @@ class _reporterFrontend extends reporter
             $analytics_status = "green";
         }
         // oop way (reccomended)
-        $n = new \Nicer($reporter->debug[0]); //Nicer($reporter->debug[0]);
+        $n = new \Nicer($reporter);
         print "<div class='report analytics $analytics_status'><h3>analytics: </h3>";
         print "<div class='reporter'>$reporter</div>";
-        print "<div class='debug print-r'>".$n->render($reporter->debug[0], 1)."</div>";
+        print "<div class='debug print-r'>";
+        $n->render();
+        print "</div>";
         print "</div>";
     }
 
@@ -170,25 +172,27 @@ class _reporterFrontend extends reporter
             $out .= "%";
         }
         $out .= "</div>";
-
+        $n = new \Nicer($reporter);
         print "<div class='report loadaverage $loadaverage_status'><h3>loadaverage: </h3>";
         print "<div class='reporter'>$out</div>";
-        print "<div class='debug print-r'>".print_r($reporter->debug[0], 1)."</div>";
+        print "<div class='debug print-r'>";
+        $n->render();
+        print "</div>";
         print "</div>";
     }
 
     /**
      * Checks, validates and builds markup for Google Page Speed Insights.
-     * @param $report
+     * @param $reporter
      */
-    private function _process_psi($report)
+    private function _process_psi($reporter)
     {
-        if (is_object($report)) {
+        if (is_object($reporter)) {
             $status = "green";
             $out = "<div class='reporter psi'><h3>psi: </h3>";
-            if (isset($report->ruleGroups)) {
+            if (isset($reporter->ruleGroups)) {
                 $out .= "<dl>";
-                foreach ($report->ruleGroups as $rule_heading => $value_object) {
+                foreach ($reporter->ruleGroups as $rule_heading => $value_object) {
                     $score = trim($value_object->score);
                     if ($score < 50) {
                         $class = "e";
@@ -199,17 +203,18 @@ class _reporterFrontend extends reporter
                     $out .= "<dt class='$class'>" . trim($rule_heading) . "</dt><dd class='$class'>" . $score . "%</dd>";
                 }
                 $out .= "<dl>";
-            } elseif ($report->error->errors[0]) {
-                $out .= $this->make_list($report->error->errors[0]);
+            } elseif ($reporter->error->errors[0]) {
+                $out .= $this->make_list($reporter->error->errors[0]);
             }
 
-            if (isset($report->screenshot)) {
-                $google_data = $report->screenshot->data;
+            if (isset($reporter->screenshot)) {
+                $google_data = $reporter->screenshot->data;
                 $base64_data = str_replace("-", "+", str_replace("_", "/", $google_data)); // This is a Google thing.
-                $out .= '<div><img src="data:' . $report->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
+                $out .= '<div><img src="data:' . $reporter->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
             }
 
             $out .= "</div>";
+            $n = new \Nicer($reporter);
 
             print "<div class='report psi $status'>$out</div>";
         }
@@ -231,11 +236,15 @@ class _reporterFrontend extends reporter
                 $out .= "Problems";
             }
         }
-
+        $n = new \Nicer($reporter);
         print "<div class='report drush unknown-status'><h3>drush: </h3>";
         print "<div class='reporter'>$out</div>";
-        print "<div class='debug print-r'>".print_r($reporter->debug[0], 1)."</div>";
+        print "<div class='debug print-r'>";
+        $n->render();
         print "</div>";
+        print "</div>";
+
+
     }
 
     /**
@@ -257,10 +266,12 @@ class _reporterFrontend extends reporter
             $out .= "%";
         }
         $out .= "</div>";
-
+        $n = new \Nicer($reporter);
         print "<div class='report $type_of_report unknown-status'><h3>$type_of_report: </h3>";
         print "<div class='reporter'>$out</div>";
-        print "<div class='debug print-r'>".print_r($reporter->debug[0], 1)."</div>";
+        print "<div class='debug print-r'>";
+        $n->render();
+        print "</div>";
         print "</div>";
     }
 }

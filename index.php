@@ -11,6 +11,12 @@ include_once "reporter/reporter.php";
 include_once "reporter/reporterFrontend.php";
 include_once "src/nice_r/Nicer.php";
 spl_autoload_register();
+
+if($_GET['debug']) {
+    $debug = "debug-show";
+} else {
+    $debug = "";
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +29,7 @@ spl_autoload_register();
     <link rel="stylesheet" type="text/css" href="src/nice_r/nice_r.css"/>
     <script type="text/javascript" src="src/nice_r/nice_r.js"></script>
 </head>
-<body>
+<body class="<?php print $debug; ?>">
 <div id="wrapper">
   <?php
   $domains["http://z-starbright.co.za.dedi25.cpt4.host-h.net"] = 1;

@@ -96,3 +96,17 @@ dt {
 .update-status:hover {
   opacity: 1;
 }
+
+.print-r {
+
+}
+
+.debug {
+  background: white;
+  padding: 0.5em;
+  display: none;
+
+  .debug-show & {
+    display: block;
+  }
+}
