@@ -32,8 +32,8 @@ include_once "reporter/reporterRemote.php";
  */
 $now = time();
 $request_tmp_name = "tmp_" . $_GET['t'] . ".json";
-$cache_file_expiry_in_minutes = 15;
-$update_expiry_in_minutes = 15;
+$cache_file_expiry_in_minutes = 1;
+$update_expiry_in_minutes = 30;
 
 /**
  * Cache - refresh intervals.
