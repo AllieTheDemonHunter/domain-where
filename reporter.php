@@ -66,7 +66,7 @@ if ($cache_use) {
     file_put_contents($request_tmp_name, $result);
     print $result;
 }
-ob_flush();
+
 // Silent
 
 $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
