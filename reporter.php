@@ -72,6 +72,7 @@ if ($cache_use && $updating) {
     //Last option is to return live results.
     make_result:
     $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
+    umask();
     file_put_contents($request_tmp_name, $result);
     print $result;
 } elseif ($cache_use) {

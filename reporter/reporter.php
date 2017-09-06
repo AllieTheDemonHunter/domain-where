@@ -75,7 +75,10 @@ class reporter
      */
     final protected function curl_connect($reset_domain_to = "")
     {
-        $this->curl_init($this->domain, $reset_domain_to);
+        if($reset_domain_to == "") {
+            $reset_domain_to = $this->domain;
+        }
+        $this->curl_init($reset_domain_to);
         return $this->curl;
     }
 
