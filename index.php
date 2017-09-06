@@ -9,6 +9,7 @@ namespace reporter;
 include_once "reporter/convenience.php";
 include_once "reporter/reporter.php";
 include_once "reporter/reporterFrontend.php";
+include_once "src/nice_r/Nicer.php";
 spl_autoload_register();
 ?>
 
@@ -19,6 +20,8 @@ spl_autoload_register();
     <title>Domain Where</title>
     <link href="css/main.css" rel="stylesheet" type="text/css">
     <script src="js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="src/nice_r/nice_r.css"/>
+    <script type="text/javascript" src="src/nice_r/nice_r.js"></script>
 </head>
 <body>
 <div id="wrapper">

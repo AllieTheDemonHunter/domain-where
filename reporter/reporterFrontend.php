@@ -142,9 +142,11 @@ class _reporterFrontend extends reporter
         } else {
             $analytics_status = "green";
         }
-
+        // oop way (reccomended)
+        $n = new \Nicer($reporter->debug[0]); //Nicer($reporter->debug[0]);
         print "<div class='report analytics $analytics_status'><h3>analytics: </h3>";
         print "<div class='reporter'>$reporter</div>";
+        print "<div class='debug print-r'>".$n->render($reporter->debug[0], 1)."</div>";
         print "</div>";
     }
 
@@ -171,6 +173,7 @@ class _reporterFrontend extends reporter
 
         print "<div class='report loadaverage $loadaverage_status'><h3>loadaverage: </h3>";
         print "<div class='reporter'>$out</div>";
+        print "<div class='debug print-r'>".print_r($reporter->debug[0], 1)."</div>";
         print "</div>";
     }
 
@@ -231,6 +234,7 @@ class _reporterFrontend extends reporter
 
         print "<div class='report drush unknown-status'><h3>drush: </h3>";
         print "<div class='reporter'>$out</div>";
+        print "<div class='debug print-r'>".print_r($reporter->debug[0], 1)."</div>";
         print "</div>";
     }
 
@@ -256,6 +260,7 @@ class _reporterFrontend extends reporter
 
         print "<div class='report $type_of_report unknown-status'><h3>$type_of_report: </h3>";
         print "<div class='reporter'>$out</div>";
+        print "<div class='debug print-r'>".print_r($reporter->debug[0], 1)."</div>";
         print "</div>";
     }
 }
