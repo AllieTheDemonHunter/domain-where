@@ -107,12 +107,6 @@ class _reporterFrontend extends reporter
     private function _process_reports($reports)
     {
         foreach ($reports as $type_of_report => $reporter) {
-            if (!$reporter) {
-                //print "problems with report: " . $type_of_report;
-                continue;
-            }
-
-
             switch ($type_of_report) {
                 case "psi":
                     //type should be object
@@ -120,29 +114,37 @@ class _reporterFrontend extends reporter
                     break;
 
                 case "analytics":
-                    //Just a string
-                    if($reporter == "No Analytics found.") {
-                        $analytics_status = "red";
-                    } else {
-                        $analytics_status = "green";
-                    }
-                    print "<div class='report $type_of_report $analytics_status'><h3>$type_of_report: </h3>$reporter</div>";
+                    $this->_process_analytics($reporter);
                     break;
 
                 case "loadaverage":
                     $this->_process_loadaverage($reporter);
                     break;
 
+                case "drush":
+                    $this->_process_drush($reporter);
+                    break;
+
                 default:
-                    print "<div class='report $type_of_report'>";
-                    //Assumed to be a reporter object.
-                    $this->_process_reporter($type_of_report, $reporter);
-                    print "</div>";
+                    $this->_process_default($reporter, $type_of_report);
+                    break;
             }
         }
     }
 
-    private function _process_loadaverage($reporter) {
+    private function _process_analytics($reporter)
+    {
+        //Just a string
+        if ($reporter == "No Analytics found.") {
+            $analytics_status = "red";
+        } else {
+            $analytics_status = "green";
+        }
+        print "<div class='report analytics $analytics_status'><h3>analytics: </h3>$reporter</div>";
+    }
+
+    private function _process_loadaverage($reporter)
+    {
         //Error flag update, set to 'value'.
         if (isset($reporter->response->loadaverage->v)) {
             $value_or_error = "v";
@@ -173,7 +175,7 @@ class _reporterFrontend extends reporter
         if (is_object($report)) {
             $status = "green";
             $out = "<div class='reporter psi'><h3>psi: </h3>";
-            if(isset($report->ruleGroups)) {
+            if (isset($report->ruleGroups)) {
                 $out .= "<dl>";
                 foreach ($report->ruleGroups as $rule_heading => $value_object) {
                     $score = trim($value_object->score);
@@ -202,79 +204,42 @@ class _reporterFrontend extends reporter
         }
     }
 
-    /**
-     * @param $type_of_report
-     * @param $reporter
-     *
-     * @return bool
-     * @throws \Exception
-     */
-    private function _process_reporter($type_of_report, $reporter)
+    private function _process_drush($reporter)
     {
-        if(is_string($reporter)) {
-            print $reporter;
-            return;
-        }
-
-        //Error flag default set to error.
-        $value_or_error = "e";
-
-        try {
-            $object_error_message = sprintf("<b>%s</b><br> Reporter object error. Check remote reporter.php file.", $type_of_report);
-
-
-
-            switch ($type_of_report) {
-
-                case "drush":
-                    //Drush
-
-                    $this->_process_drush($reporter);
-
-                    break;
-                default :
-                    $this->_process_default($reporter, $type_of_report);
-                    break;
-            }
-
-
-
-        } catch (\Exception $exception) {
-            throw new \Exception($object_error_message, E_ERROR);
-        }
-
-        return TRUE;
-    }
-
-    private function _process_drush($reporter) {
-        print "<div class='reporter drush'><h3>Drush: </h3>";
         foreach ($reporter->response->drush as $drush_command => $value_or_error) {
-            if($result = $value_or_error->v) {
-                print $this->make_list($result, 1);
+            if ($result = $value_or_error->v) {
+                $out = $this->make_list($result, 1);
             } elseif ($result = $value_or_error->e) {
-                print $this->make_list([[$drush_command, $value_or_error->e]], 0);
+                $out .= $this->make_list([[$drush_command, $value_or_error->e]], 0);
             } else {
-                //problems
+                $out .= "Problems";
             }
         }
+        $out .= "</div>";
+
+        print "<div class='report drush unknown-status'><h3>drush: </h3>";
+        print "<div class='reporter'>$out</div>";
         print "</div>";
     }
 
-    private function _process_default($reporter, $type_of_report) {
-        print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
+    private function _process_default($reporter, $type_of_report)
+    {
         //Error flag update, set to 'value'.
         if (isset($reporter->response->$type_of_report->v)) {
             $value_or_error = "v";
         }
 
-        print "<div class='value $value_or_error'>";
+        $out = "<div class='value $value_or_error'>";
         $the_value = $reporter->response->$type_of_report->$value_or_error;
         //Server metrics
-        print $the_value;
+        $out .= $the_value;
         if (is_numeric($the_value)) {
-            print "%";
+            $out .= "%";
         }
-        print "</div>";
+        $out .= "</div>";
+
+        print "<div class='report $type_of_report unknown-status'><h3>$type_of_report: </h3>";
+        print "<div class='reporter'>$out</div>";
         print "</div>";
     }
 }
