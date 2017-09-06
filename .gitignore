@@ -1,4 +1,4 @@
-tmp.json
+*.json
 .idea
 /node_modules/
 ### Xcode template
