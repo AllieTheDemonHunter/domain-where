@@ -51,6 +51,9 @@ $debug[] = "CACHE({$cache_use}):" . $cache_difference . " < " . $expiry_cache_in
 
 if ($cache_use) {
     $debug[] = "Not updating, and has 'new enough' version cached.";
+
+    header('Expires: '. gmdate('D, d M Y H:i:s' . ' GMT+2', strtotime("+".$cache_difference." seconds")));
+
     print file_get_contents($request_tmp_name);
 } else {
     /**
@@ -64,6 +67,9 @@ if ($cache_use) {
     $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
     umask();
     file_put_contents($request_tmp_name, $result);
+
+    header('Expires: '. gmdate('D, d M Y H:i:s' . ' GMT+2', strtotime("+".$expiry_cache_in_seconds." seconds")));
+
     print $result;
 }
 
