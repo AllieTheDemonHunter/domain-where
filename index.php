@@ -32,7 +32,9 @@ spl_autoload_register();
   $domains["https://www.ferreirapartners.co.za"] = 0;
   $domains["http://sph"] = 0;
 
-  $requests = ["loadaverage", "disk", "drush", "psi", "analytics"];
+  //$requests = ["loadaverage", "disk", "drush", "psi", "analytics"];
+
+  $requests = ["loadaverage"];
 
   foreach ($domains as $domain => $active) {
     if ($active) {

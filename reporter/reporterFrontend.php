@@ -121,7 +121,16 @@ class _reporterFrontend extends reporter
 
                 case "analytics":
                     //Just a string
-                    print "<div class='report $type_of_report'><h3>$type_of_report: </h3>$reporter</div>";
+                    if($reporter == "No Analytics found.") {
+                        $analytics_status = "red";
+                    } else {
+                        $analytics_status = "green";
+                    }
+                    print "<div class='report $type_of_report $analytics_status'><h3>$type_of_report: </h3>$reporter</div>";
+                    break;
+
+                case "loadaverage":
+                    $this->_process_loadaverage($reporter);
                     break;
 
                 default:
@@ -131,6 +140,28 @@ class _reporterFrontend extends reporter
                     print "</div>";
             }
         }
+    }
+
+    private function _process_loadaverage($reporter) {
+        //Error flag update, set to 'value'.
+        if (isset($reporter->response->loadaverage->v)) {
+            $value_or_error = "v";
+            $loadaverage_status = "green";
+        } else {
+            $loadaverage_status = "red";
+        }
+        $out = "<div class='value $value_or_error'>";
+        $the_value = $reporter->response->loadaverage->$value_or_error;
+        //Server metrics
+        $out .= $the_value;
+        if (is_numeric($the_value)) {
+            $out .= "%";
+        }
+        $out .= "</div>";
+
+        print "<div class='report loadaverage $loadaverage_status'><h3>loadaverage: </h3>";
+        print "<div class='reporter'>$out</div>";
+        print "</div>";
     }
 
     /**
