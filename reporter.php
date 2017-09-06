@@ -47,13 +47,17 @@ if ($cache_difference < $expiry_cache_in_seconds) {
 } else {
     $cache_use = 0;
 }
-$debug[] = "CACHE({$cache_use}):" . $cache_difference . " < " . $expiry_cache_in_seconds;
+$debug["use_cache"] = $cache_use;
+$debug["cache_difference"] = $cache_difference;
+$debug["cache_file_expiry_in_minutes"] = $cache_file_expiry_in_minutes;
 
 if ($cache_use && 0) {
-    $debug[] = "Not updating, and has 'new enough' version cached.";
-
-    header('Expires: '. date('D, d M Y H:i:s e', strtotime("+".$cache_difference." seconds")));
-
+    $cache_expire_http_header = 'Expires: '. date('D, d M Y H:i:s e', strtotime("+".$cache_difference." seconds"));
+    //Debug
+    $debug["messages"][] = "Not updating, and has 'new enough' version cached.";
+    $debug["cache_expire_http_header"] = $cache_expire_http_header;
+    
+    header($cache_expire_http_header);
     print file_get_contents($request_tmp_name);
 } else {
     /**
@@ -61,23 +65,27 @@ if ($cache_use && 0) {
      *
      * Create Result
      */
-    $debug[] = "Updating with no cached result. Creating a result.";
-    //Last option is to return live results.
-    make_result:
+    $expire_http_header = 'Expires: '. date('D, d M Y H:i:s e', strtotime("+".$expiry_cache_in_seconds." seconds"));
+    //Debug
+    $debug["messages"][] = "Updating with no cached result. Creating a result.";
+    $debug["_expire_http_header"] = $expire_http_header;
+
+    //Execute
     $result_raw = new _reporterRemote($_SERVER['SERVER_NAME']);
+    //Attach debug
     $result_raw->debug = [$debug];
+    //Encode for transport
     $result = json_encode($result_raw);
 
     //Cache this version
     umask();
     file_put_contents($request_tmp_name, $result);
 
-    header('Expires: '. date('D, d M Y H:i:s e', strtotime("+".$expiry_cache_in_seconds." seconds")));
+    header($expire_http_header);
     print $result;
 }
 
 // Silent
-
 $expiry_update_in_seconds = $update_expiry_in_minutes * 60;
 $then = `git log -1 --pretty=format:%ct`;
 $update_difference_in_seconds = $now - $then;
@@ -85,6 +93,3 @@ $update_difference_in_seconds = $now - $then;
 if ($update_difference_in_seconds > $expiry_update_in_seconds) {
     `git pull --quiet`;
 }
-
-//$reasons = print_r($debug,1);
-//print "<pre>{$reasons}</pre>";
