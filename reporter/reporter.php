@@ -36,7 +36,7 @@ class reporter
     public function __construct($domain)
     {
         $this->domain = $domain;
-        $this->version = $this->version . " on " . date("F j, Y, g:i a") . "@" . `git log -1 --pretty=format:%ct`;
+        $this->version = $this->version . " on " . date("F j, Y, g:i a", `git log -1 --pretty=format:%ct`);
     }
 
     /**
