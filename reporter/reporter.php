@@ -75,28 +75,8 @@ class reporter
      */
     final protected function curl_connect($reset_domain_to = "")
     {
-        if (is_resource($this->curl)) {
-            curl_close($this->curl);
-        }
-
-        /**
-         * If $domain is set, we're dropping the old connection,
-         * and making a new one (because we're changing URLs).
-         */
-        if ($reset_domain_to != "") {
-            $this->curl_init($reset_domain_to, "");
-        } else {
-            /**
-             * This is the default route.
-             */
-            $this->curl_init($this->domain);
-        }
-
-        if ($this->curl) {
-            return $this->curl;
-        }
-
-        return FALSE;
+        $this->curl_init($this->domain, $reset_domain_to);
+        return $this->curl;
     }
 
     /**

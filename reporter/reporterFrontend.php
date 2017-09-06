@@ -206,8 +206,6 @@ class _reporterFrontend extends reporter
                         }
                     }
 
-
-
                     break;
                 default :
                     //Error flag update, set to 'value'.

@@ -11,6 +11,8 @@ namespace reporter;
 trait convenience
 {
 
+    protected $curl;
+
     /**
      * @param (mixed) $d
      */
@@ -51,18 +53,18 @@ trait convenience
      */
     public function curl_init($domain, $uri = "/domain-where/reporter.php")
     {
-        if (!is_resource($this->curl)) {
-            $curl = curl_init($domain . $uri);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/json',
-                ]
-            );
-            $this->curl = $curl;
-            return TRUE;
+        if (is_resource($this->curl)) {
+            curl_close($this->curl);
         }
 
-        return FALSE;
+        $curl = curl_init($domain . $uri);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+            ]
+        );
+
+        $this->curl = $curl;
     }
 
     public static function getInputFromRequestBody()
@@ -71,9 +73,10 @@ trait convenience
         return json_decode($body, TRUE);
     }
 
-    public static function make_machine_name($human_readable) {
+    public static function make_machine_name($human_readable)
+    {
         $machine_readable = strtolower($human_readable);
-        $machine_readable = preg_replace('@[^a-z0-9_]+@','_',$machine_readable);
+        $machine_readable = preg_replace('@[^a-z0-9_]+@', '_', $machine_readable);
         return $machine_readable;
     }
 }
