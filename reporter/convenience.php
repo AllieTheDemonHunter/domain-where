@@ -34,16 +34,18 @@ trait convenience
             $array_data = $data;
         }
 
-        print "<dl>";
+        $out = "<dl>";
         foreach ($array_data as $result) {
             $definition = $result[1];
             if (is_array($definition)) {
-                print "<dt>" . trim($result[0]) . "</dt><dd>" . self::make_list($definition) . "</dd>";
+                $out .= "<dt>" . trim($result[0]) . "</dt><dd>" . self::make_list($definition) . "</dd>";
             } else {
-                print "<dt>" . trim($result[0]) . "</dt><dd>" . trim($definition) . "</dd>";
+                $out .= "<dt>" . trim($result[0]) . "</dt><dd>" . trim($definition) . "</dd>";
             }
         }
-        print "</dl>";
+        $out .= "</dl>";
+
+        return $out;
     }
 
     /**

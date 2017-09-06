@@ -187,7 +187,7 @@ class _reporterFrontend extends reporter
                 }
                 $out .= "<dl>";
             } elseif ($report->error->errors[0]) {
-                $this->make_list($report->error->errors[0]);
+                $out .= $this->make_list($report->error->errors[0]);
             }
 
             if (isset($report->screenshot)) {
@@ -222,47 +222,59 @@ class _reporterFrontend extends reporter
         try {
             $object_error_message = sprintf("<b>%s</b><br> Reporter object error. Check remote reporter.php file.", $type_of_report);
 
-            print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
+
 
             switch ($type_of_report) {
 
                 case "drush":
                     //Drush
 
-                    foreach ($reporter->response->$type_of_report as $drush_command => $value_or_error) {
-                        if($result = $value_or_error->v) {
-                            $this->make_list($result, 1);
-                        } elseif ($result = $value_or_error->e) {
-                            $this->make_list([[$drush_command, $value_or_error->e]], 0);
-                        } else {
-                            //problems
-                        }
-                    }
+                    $this->_process_drush($reporter);
 
                     break;
                 default :
-                    //Error flag update, set to 'value'.
-                    if (isset($reporter->response->$type_of_report->v)) {
-                        $value_or_error = "v";
-                    }
-
-                    print "<div class='value $value_or_error'>";
-                    $the_value = $reporter->response->$type_of_report->$value_or_error;
-                    //Server metrics
-                    print $the_value;
-                    if (is_numeric($the_value)) {
-                        print "%";
-                    }
-                    print "</div>";
+                    $this->_process_default($reporter, $type_of_report);
                     break;
             }
 
-            print "</div>";
+
 
         } catch (\Exception $exception) {
             throw new \Exception($object_error_message, E_ERROR);
         }
 
         return TRUE;
+    }
+
+    private function _process_drush($reporter) {
+        print "<div class='reporter drush'><h3>Drush: </h3>";
+        foreach ($reporter->response->drush as $drush_command => $value_or_error) {
+            if($result = $value_or_error->v) {
+                print $this->make_list($result, 1);
+            } elseif ($result = $value_or_error->e) {
+                print $this->make_list([[$drush_command, $value_or_error->e]], 0);
+            } else {
+                //problems
+            }
+        }
+        print "</div>";
+    }
+
+    private function _process_default($reporter, $type_of_report) {
+        print "<div class='reporter $type_of_report'><h3>$type_of_report: </h3>";
+        //Error flag update, set to 'value'.
+        if (isset($reporter->response->$type_of_report->v)) {
+            $value_or_error = "v";
+        }
+
+        print "<div class='value $value_or_error'>";
+        $the_value = $reporter->response->$type_of_report->$value_or_error;
+        //Server metrics
+        print $the_value;
+        if (is_numeric($the_value)) {
+            print "%";
+        }
+        print "</div>";
+        print "</div>";
     }
 }
