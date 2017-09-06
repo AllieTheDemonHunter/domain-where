@@ -64,7 +64,10 @@ if ($cache_use) {
     $debug[] = "Updating with no cached result. Creating a result.";
     //Last option is to return live results.
     make_result:
-    $result = json_encode(new _reporterRemote($_SERVER['SERVER_NAME']));
+    $result_raw = new _reporterRemote($_SERVER['SERVER_NAME']);
+    $result = json_encode($result_raw);
+
+    //Cache this version
     umask();
     file_put_contents($request_tmp_name, $result);
 
