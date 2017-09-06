@@ -16,6 +16,8 @@ class _reporterRemote extends reporter
 
     public $web_root;
 
+    public $debug;
+
     public $drush_root = "/usr/home/%s/vendor/bin/drush";
 
     public function __construct($domain, $drush_root_hint = NULL)

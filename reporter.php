@@ -49,10 +49,10 @@ if ($cache_difference < $expiry_cache_in_seconds) {
 }
 $debug[] = "CACHE({$cache_use}):" . $cache_difference . " < " . $expiry_cache_in_seconds;
 
-if ($cache_use) {
+if ($cache_use && 0) {
     $debug[] = "Not updating, and has 'new enough' version cached.";
 
-    header('Expires: '. gmdate('D, d M Y H:i:s' . ' GMT+2', strtotime("+".$cache_difference." seconds")));
+    header('Expires: '. date('D, d M Y H:i:s e', strtotime("+".$cache_difference." seconds")));
 
     print file_get_contents($request_tmp_name);
 } else {
@@ -65,14 +65,14 @@ if ($cache_use) {
     //Last option is to return live results.
     make_result:
     $result_raw = new _reporterRemote($_SERVER['SERVER_NAME']);
+    $result_raw->debug = [$debug];
     $result = json_encode($result_raw);
 
     //Cache this version
     umask();
     file_put_contents($request_tmp_name, $result);
 
-    header('Expires: '. gmdate('D, d M Y H:i:s' . ' GMT+2', strtotime("+".$expiry_cache_in_seconds." seconds")));
-
+    header('Expires: '. date('D, d M Y H:i:s e', strtotime("+".$expiry_cache_in_seconds." seconds")));
     print $result;
 }
 
