@@ -4,6 +4,7 @@ body {
   background-color: rgba(0, 0, 0, .8);
   font-size: 12px;
 }
+
 h2 {
   font-size: 0.8em;
   text-align: center;
@@ -15,28 +16,39 @@ h2 {
   padding: 1em 0;
   background: rgba(62, 117, 20, 0.92);
 }
+
 h3 {
   margin: 1em auto 0.1em;
   text-transform: capitalize;
 }
+
 #wrapper {
   display: table;
-  margin: 1em;
   background-color: rgba(0, 0, 0, .8);
-  border-radius: 4px;
+  border-radius: 2px;
   filter: drop-shadow(0 0 3px black);
-  padding: 1em;
+  width: 100%;
 }
+
 .reports {
   display: table-row;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.12);
+  &:nth-child(2n+1) {
+    background-color: rgba(255, 255, 255, 0.22);
+  }
 }
+
 .report {
-  padding: 0.6em 0.8em 1.5em;
-  background-color: rgba(255, 255, 255, 0.22);
-  border-radius: 3px 6px 3px 3px;
+  padding: 0.5em;
+  border-radius: 0 6px 0 0;
   margin: 1px;
   position: relative;
   display: table-cell;
+  background-color: rgba(255, 255, 255, 0.12);
+  &:nth-child(2n+1) {
+    background-color: rgba(255, 255, 255, 0.22);
+  }
 
   &:after {
     position: absolute;
@@ -46,7 +58,7 @@ h3 {
     top: 0;
     right: 0;
     border: 1px solid;
-    border-radius: 50%;
+    border-radius: 50% 0 50% 50%;
     text-align: center;
     color: silver;
   }
@@ -56,32 +68,46 @@ h3 {
   }
 
   &.green:after {
-    color: green;
+    background-color: green;
+    border-color: green;
+    color: white;
+
     content: "\2713";
   }
 
   &.red:after {
-    color: red;
+    color: white;
+    background-color: red;
+    border-color: red;
     content: "!!";
   }
 }
+
 .time-taken {
   text-align: center;
   padding: 1em;
-  position: relative;
+  position: absolute;
+  display: table-cell;
+  left: 5px;
+  transform: translateY(40px);
 }
+
 dt {
   text-transform: uppercase;
 }
+
 .v {
   color: green;
 }
+
 .e {
   color: red;
 }
+
 .reporter {
   position: relative;
 }
+
 .update-status {
   font-size: 0.8em;
   border: 1px solid lightskyblue;
@@ -92,6 +118,7 @@ dt {
 
   opacity: 0.2;
 }
+
 .update-status:hover {
   opacity: 1;
 }
@@ -101,10 +128,11 @@ dt {
 }
 
 .debug {
-
+  position: relative;
   padding: 0.5em;
   .debug-toggle {
     color: white;
+    position: absolute;
   }
   .nice_r {
     display: none;
@@ -122,13 +150,19 @@ dt {
 
   .reporter {
     display: table;
+    width: 100%;
 
     .drush-report {
       display: table-row;
 
-        .drush-report-facet {
-          display: table-cell;
+      .drush-report-facet {
+        display: table-cell;
+        padding: 0.25em;
+        background-color: rgba(255, 255, 255, 0.12);
+        &:nth-child(2n+1) {
+          background-color: rgba(255, 255, 255, 0.22);
         }
+      }
     }
   }
 }
