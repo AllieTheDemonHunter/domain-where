@@ -182,8 +182,9 @@ class _reporterFrontend extends reporter
     {
         if (is_object($reporter)) {
             $status = "green";
+            $out = "";
             if (isset($reporter->ruleGroups)) {
-                $out = "<dl>";
+                $out .= "<dl>";
                 foreach ($reporter->ruleGroups as $rule_heading => $value_object) {
                     $score = trim($value_object->score);
                     if ($score < 50) {
@@ -199,7 +200,7 @@ class _reporterFrontend extends reporter
                 $out .= $this->make_list($reporter->error->errors[0]);
             }
 
-            if (isset($reporter->screenshot)) {
+            if (isset($reporter->screenshot) && 0) {
                 $google_data = $reporter->screenshot->data;
                 $base64_data = str_replace("-", "+", str_replace("_", "/", $google_data)); // This is a Google thing.
                 $out .= '<div><img src="data:' . $reporter->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
@@ -216,8 +217,9 @@ class _reporterFrontend extends reporter
      */
     private function _process_drush($reporter)
     {
-        $out = "";
+        $out = "<div class='drush-report'>";
         foreach ($reporter->response->drush as $drush_command => $value_or_error) {
+            $out .= "<div class='drush-report-facet'>";
             $out .= "<code>$drush_command</code>";
             if ($result = $value_or_error->v) {
                 $out .= $this->make_list($result, 1);
@@ -226,8 +228,9 @@ class _reporterFrontend extends reporter
             } else {
                 $out .= "Problems";
             }
+            $out .= "</div>";
         }
-
+        $out .= "</div>";
         $reporter->out = $out;
         $reporter->name = "Drush";
         $this->report_wrapper($reporter, "unknown-status");

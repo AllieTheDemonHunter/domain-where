@@ -20,9 +20,7 @@ h3 {
   text-transform: capitalize;
 }
 #wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
+  display: table;
   margin: 1em;
   background-color: rgba(0, 0, 0, .8);
   border-radius: 4px;
@@ -30,14 +28,15 @@ h3 {
   padding: 1em;
 }
 .reports {
-  flex: 0 1 260px;
+  display: table-row;
 }
 .report {
   padding: 0.6em 0.8em 1.5em;
   background-color: rgba(255, 255, 255, 0.22);
   border-radius: 3px 6px 3px 3px;
-  margin-bottom: 1px;
+  margin: 1px;
   position: relative;
+  display: table-cell;
 
   &:after {
     position: absolute;
@@ -115,6 +114,21 @@ dt {
   .debug-show & {
     .nice_r {
       display: block;
+    }
+  }
+}
+
+.drush {
+
+  .reporter {
+    display: table;
+
+    .drush-report {
+      display: table-row;
+
+        .drush-report-facet {
+          display: table-cell;
+        }
     }
   }
 }

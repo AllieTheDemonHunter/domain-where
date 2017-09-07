@@ -83,8 +83,8 @@ class _reporterRemote extends reporter
             case ("drush"): {
                 $commands["status"] = [
                     "Drupal version",
-                    "Drupal bootstrap",
-                    "Database",
+                    //"Drupal bootstrap",
+                    //"Database",
                 ];
                 $commands["vget leadtrekker_api_key"] = ["leadtrekker_api_key"];
                 $commands["pmi leadtrekker"] = ["Status"];
