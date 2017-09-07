@@ -82,4 +82,15 @@ trait convenience
         $machine_readable = preg_replace('@[^a-z0-9_]+@', '_', $machine_readable);
         return $machine_readable;
     }
+
+    public function report_wrapper ($report, $status) {
+        // oop way (reccomended)
+        $n = new \Nicer($report);
+        print "<div class='report analytics $status'><h3>$report->name: </h3>";
+        print "<div class='reporter'>$report->out</div>";
+        print "<div class='debug print-r'>";
+        $n->render();
+        print "</div>";
+        print "</div>";
+    }
 }

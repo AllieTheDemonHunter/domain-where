@@ -40,7 +40,7 @@ if($_GET['debug']) {
 
   $requests = ["analytics", "loadaverage", "disk", "drush", "psi"];
 
-  $requests = ["analytics", "loadaverage", "disk", "drush"];
+  //$requests = ["analytics", "loadaverage"];
 
   foreach ($domains as $domain => $active) {
     if ($active) {

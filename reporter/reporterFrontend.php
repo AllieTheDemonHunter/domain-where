@@ -134,22 +134,18 @@ class _reporterFrontend extends reporter
     /**
      * @param $reporter
      */
-    private function _process_analytics($reporter)
+    private function _process_analytics($answer)
     {
         //Just a string
-        if ($reporter == "No Analytics found.") {
+        if ($answer == "No Analytics found.") {
             $analytics_status = "red";
         } else {
             $analytics_status = "green";
         }
-        // oop way (reccomended)
-        $n = new \Nicer($reporter);
-        print "<div class='report analytics $analytics_status'><h3>analytics: </h3>";
-        print "<div class='reporter'>$reporter</div>";
-        print "<div class='debug print-r'>";
-        $n->render();
-        print "</div>";
-        print "</div>";
+        $reporter = new \stdClass();
+        $reporter->out = $answer;
+        $reporter->name = "Analytics";
+        $this->report_wrapper($reporter, $analytics_status);
     }
 
     /**
@@ -172,13 +168,10 @@ class _reporterFrontend extends reporter
             $out .= "%";
         }
         $out .= "</div>";
-        $n = new \Nicer($reporter);
-        print "<div class='report loadaverage $loadaverage_status'><h3>loadaverage: </h3>";
-        print "<div class='reporter'>$out</div>";
-        print "<div class='debug print-r'>";
-        $n->render();
-        print "</div>";
-        print "</div>";
+
+        $reporter->out = $out;
+        $reporter->name = "Loadaverage";
+        $this->report_wrapper($reporter, $loadaverage_status);
     }
 
     /**
@@ -214,9 +207,9 @@ class _reporterFrontend extends reporter
             }
 
             $out .= "</div>";
-            $n = new \Nicer($reporter);
-
-            print "<div class='report psi $status'>$out</div>";
+            $reporter->out = $out;
+            $reporter->name = "PSI";
+            $this->report_wrapper($reporter, $status);
         }
     }
 
