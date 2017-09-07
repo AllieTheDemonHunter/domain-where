@@ -84,7 +84,6 @@ trait convenience
     }
 
     public function report_wrapper ($report, $status) {
-        // oop way (reccomended)
         $machine_name = $this->make_machine_name($report->name);
         print "<div class='report $machine_name $status'><h3>$report->name: </h3>";
         print "<div class='debug print-r'><div class='debug-toggle'>x</div>";

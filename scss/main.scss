@@ -131,8 +131,13 @@ dt {
   position: relative;
   padding: 0.5em;
   .debug-toggle {
-    color: white;
+    color: rgba(255, 255, 255, 0.1);
     position: absolute;
+    top: -34px;
+    right: 15px;
+    border: 1px solid;
+    border-radius: 50%;
+    padding: 0 4px 1px 4px;
   }
   .nice_r {
     display: none;
