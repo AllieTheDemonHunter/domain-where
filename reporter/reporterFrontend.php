@@ -182,9 +182,8 @@ class _reporterFrontend extends reporter
     {
         if (is_object($reporter)) {
             $status = "green";
-            $out = "<div class='reporter psi'><h3>psi: </h3>";
             if (isset($reporter->ruleGroups)) {
-                $out .= "<dl>";
+                $out = "<dl>";
                 foreach ($reporter->ruleGroups as $rule_heading => $value_object) {
                     $score = trim($value_object->score);
                     if ($score < 50) {
@@ -205,8 +204,7 @@ class _reporterFrontend extends reporter
                 $base64_data = str_replace("-", "+", str_replace("_", "/", $google_data)); // This is a Google thing.
                 $out .= '<div><img src="data:' . $reporter->screenshot->mime_type . ';charset=utf-8;base64, ' . $base64_data . '"></div>';
             }
-
-            $out .= "</div>";
+            unset($reporter->ruleGroups, $reporter->version, $reporter->screenshot);
             $reporter->out = $out;
             $reporter->name = "PSI";
             $this->report_wrapper($reporter, $status);
@@ -229,15 +227,10 @@ class _reporterFrontend extends reporter
                 $out .= "Problems";
             }
         }
-        $n = new \Nicer($reporter);
-        print "<div class='report drush unknown-status'><h3>drush: </h3>";
-        print "<div class='reporter'>$out</div>";
-        print "<div class='debug print-r'>";
-        $n->render();
-        print "</div>";
-        print "</div>";
 
-
+        $reporter->out = $out;
+        $reporter->name = "Drush";
+        $this->report_wrapper($reporter, "unknown-status");
     }
 
     /**
@@ -249,6 +242,9 @@ class _reporterFrontend extends reporter
         //Error flag update, set to 'value'.
         if (isset($reporter->response->$type_of_report->v)) {
             $value_or_error = "v";
+            $status = "green";
+        } else {
+            $status = "red";
         }
 
         $out = "<div class='value $value_or_error'>";
@@ -259,12 +255,9 @@ class _reporterFrontend extends reporter
             $out .= "%";
         }
         $out .= "</div>";
-        $n = new \Nicer($reporter);
-        print "<div class='report $type_of_report unknown-status'><h3>$type_of_report: </h3>";
-        print "<div class='reporter'>$out</div>";
-        print "<div class='debug print-r'>";
-        $n->render();
-        print "</div>";
-        print "</div>";
+
+        $reporter->out = $out;
+        $reporter->name = $type_of_report;
+        $this->report_wrapper($reporter, $status);
     }
 }

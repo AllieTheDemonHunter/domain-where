@@ -102,11 +102,19 @@ dt {
 }
 
 .debug {
-  background: white;
+
   padding: 0.5em;
-  display: none;
+  .debug-toggle {
+    color: white;
+  }
+  .nice_r {
+    display: none;
+    background: white;
+  }
 
   .debug-show & {
-    display: block;
+    .nice_r {
+      display: block;
+    }
   }
 }

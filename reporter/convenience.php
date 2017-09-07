@@ -85,10 +85,12 @@ trait convenience
 
     public function report_wrapper ($report, $status) {
         // oop way (reccomended)
-        $n = new \Nicer($report);
-        print "<div class='report analytics $status'><h3>$report->name: </h3>";
+        $machine_name = $this->make_machine_name($report->name);
+        print "<div class='report $machine_name $status'><h3>$report->name: </h3>";
         print "<div class='reporter'>$report->out</div>";
-        print "<div class='debug print-r'>";
+        print "<div class='debug print-r'><div class='debug-toggle'>x</div>";
+        unset($report->out);
+        $n = new \Nicer($report);
         $n->render();
         print "</div>";
         print "</div>";
