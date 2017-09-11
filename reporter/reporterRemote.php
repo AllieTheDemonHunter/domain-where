@@ -47,10 +47,24 @@ class _reporterRemote extends reporter
          */
         if (!array_key_exists("t", $infoSource)) {
             $infoSource["t"] = "loadaverage";
+            $multiple_query[] = "loadaverage";
+        } else {
+            $multiple_query[] = explode(",", $infoSource);
         }
 
-        $report_type = $infoSource["t"];
+        if (!is_array($multiple_query)) {
+            throw new \ErrorException;
+        } else {
+            foreach ($multiple_query as $report_type) {
+                $this->report_iterate($report_type);
+            }
+        }
 
+        return TRUE;
+    }
+
+    protected function report_iterate($report_type)
+    {
         switch ($report_type) {
             case ("version"):
                 break;
@@ -60,7 +74,7 @@ class _reporterRemote extends reporter
                     $this->response[$report_type]["e"]
                         = "<code>sys_getloadavg()</code> is denied on server.";
                 } else {
-                    array_walk($topData, function(&$average_interval){
+                    array_walk($topData, function (&$average_interval) {
                         $average_interval = round($average_interval, 2);
                     });
                     $this->response[$report_type]["v"] = implode(" | ", $topData);
@@ -97,8 +111,6 @@ class _reporterRemote extends reporter
             break;
             }
         }
-
-        return TRUE;
     }
 
     public function drush_request(array $commands)
