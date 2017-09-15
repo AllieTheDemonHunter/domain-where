@@ -139,5 +139,5 @@ Would skip repository src/nice_r
 /send.php
 /Domains_All May 2017.xlsx
 Domains_All May 2017.csv
-example.php
-settings.php
+#example.php
+#settings.php
