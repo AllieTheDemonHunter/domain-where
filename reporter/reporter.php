@@ -59,7 +59,7 @@ class reporter
         $psi_object = $this->curl_fetch();
 
         try {
-            unset($psi_object->formattedResults);
+            //unset($psi_object->formattedResults);
             $this->response['psi'] = $psi_object;
         } catch (\Exception $exception) {
             throw new \Exception("The remote server returned an error page.", E_RECOVERABLE_ERROR);

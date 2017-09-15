@@ -134,8 +134,10 @@ fabric.properties
 
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
-.DS_Store
-css/.DS_Store
-js/.DS_Store
 !/src/nice_r/
 Would skip repository src/nice_r
+/send.php
+/Domains_All May 2017.xlsx
+Domains_All May 2017.csv
+example.php
+settings.php
