@@ -32,10 +32,10 @@ class _reporterRemote extends reporter
     /**
      * The run function.
      *
+     * @throws \ErrorException
      * @return bool
      */
 
-    // @TODO The amount of things this method does isn't defensible.
     public function report()
     {
         $infoSource = $_SERVER['REQUEST_METHOD'] == "POST" ? $this->getInputFromRequestBody() :
@@ -116,7 +116,6 @@ class _reporterRemote extends reporter
     public function drush_request(array $commands)
     {
         $response = array();
-        $responses = array();
         foreach ($commands as $command => $keys) {
             $drushData = `php $this->drush_root --root=$this->web_root $command`;
             //Make the command string safe to use as a key in returned JSON.
