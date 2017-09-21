@@ -49,7 +49,7 @@ class _reporterRemote extends reporter
             $infoSource["t"] = "loadaverage";
             $multiple_query[] = "loadaverage";
         } else {
-            $multiple_query[] = explode(",", $infoSource);
+            $multiple_query = explode(",", $infoSource["t"]);
         }
 
         if (!is_array($multiple_query)) {

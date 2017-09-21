@@ -42,28 +42,18 @@ include_once 'settings.php';
 <table border="1" cellpadding="1" cellspacing="0">
     <thead>
     <tr>
-        <td>Domain
-        </td>
-        <td>Live
-        </td>
+        <td>Domain</td>
+        <td>Live</td>
         <td>Speed</td>
         <td>Usability</td>
-        <td>Framework
-        </td>
-        <td>www
-        </td>
-        <td>@
-        </td>
-        <td>Mail
-        </td>
-        <td style="background-color: #ADE7D9">Analytics Stored
-        </td>
-        <td>Analytics Found
-        </td>
-        <td style="background-color: #ADE7D9">Analytics Expired
-        </td>
-        <td>Robots.txt
-        </td>
+        <td>Framework</td>
+        <td>www</td>
+        <td>@</td>
+        <td>Mail</td>
+        <td style="background-color: #ADE7D9">Analytics Stored</td>
+        <td>Analytics Found</td>
+        <td style="background-color: #ADE7D9">Analytics Expired</td>
+        <td>Robots.txt</td>
     </tr>
     </thead>
 
@@ -158,7 +148,7 @@ include_once 'settings.php';
     <?php
     endforeach;
     ?>
-    <table>
+    </table>
 </body>
 </html>
 

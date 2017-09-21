@@ -132,7 +132,8 @@ class _reporterFrontend extends reporter
     }
 
     /**
-     * @param $reporter
+     * @param $answer
+     * @internal param $reporter
      */
     private function _process_analytics($answer)
     {
